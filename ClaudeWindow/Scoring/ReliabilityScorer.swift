@@ -30,10 +30,12 @@ enum ReliabilityScorer {
     }
 
     private static func windowState(for score: Int) -> WindowState {
+        // Unified thresholds with LimitEfficiencyScorer for consistent UI coloring:
+        // 70+ = green (good), 45-69 = yellow (average), 25-44 = orange (risky), <25 = red (poor)
         switch score {
-        case 80...100: return .efficient
-        case 55..<80:  return .average
-        case 30..<55:  return .highRisk
+        case 70...100: return .efficient
+        case 45..<70:  return .average
+        case 25..<45:  return .highRisk
         default:       return .poor
         }
     }

@@ -17,14 +17,20 @@ enum WorkloadProfile: String, Codable, CaseIterable {
         }
     }
 
-    /// Average tokens consumed per query (prompt + response, heuristic).
+    /// Base tokens consumed per query (prompt + response, Sonnet-equivalent).
+    /// Updated April 2026 based on observed usage across models.
     var tokensPerQuery: Int {
         switch self {
-        case .lightChat:           return 500
-        case .standardWriting:     return 1_200
-        case .coding:              return 2_000
-        case .longContextAnalysis: return 8_000
-        case .documentHeavy:       return 12_000
+        case .lightChat:           return 800
+        case .standardWriting:     return 2_000
+        case .coding:              return 3_500
+        case .longContextAnalysis: return 10_000
+        case .documentHeavy:       return 18_000
         }
+    }
+
+    /// Adjusted tokens for a specific model.
+    func tokensPerQuery(for model: ClaudeModel) -> Int {
+        Int(Double(tokensPerQuery) * model.tokensPerQueryMultiplier)
     }
 }

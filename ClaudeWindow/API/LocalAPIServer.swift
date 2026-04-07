@@ -74,6 +74,8 @@ final class LocalAPIServer {
                       ?? WindowScore(score: 50, state: .unknown,
                                      confidence: .low, reasons: [])
 
+        let model = appState.settings.selectedModel
+
         switch path {
         case "/health":
             return APIHandlers.health()
@@ -82,13 +84,15 @@ final class LocalAPIServer {
         case "/recommendation":
             let cap = appState.capacity
                    ?? QueryCapacity(minQueries: 0, maxQueries: 0,
-                                    minTokens: 0, maxTokens: 0, confidence: .low)
+                                    minTokens: 0, maxTokens: 0,
+                                    model: model, confidence: .low)
             return APIHandlers.recommendation(surface: surface, mode: mode,
                                               score: score, capacity: cap)
         case "/capacity":
             let cap = appState.capacity
                    ?? QueryCapacity(minQueries: 0, maxQueries: 0,
-                                    minTokens: 0, maxTokens: 0, confidence: .low)
+                                    minTokens: 0, maxTokens: 0,
+                                    model: model, confidence: .low)
             return APIHandlers.capacity(cap)
         case "/best-window":
             return APIHandlers.bestWindow(appState.bestWindow)

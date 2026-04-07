@@ -5,6 +5,7 @@ struct QueryCapacity: Codable, Equatable {
     let maxQueries: Int
     let minTokens: Int
     let maxTokens: Int
+    let model: ClaudeModel
     let confidence: Confidence
 }
 

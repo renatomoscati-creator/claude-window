@@ -32,6 +32,8 @@ final class SettingsStore: ObservableObject {
         } else {
             customPlan = CustomPlanSettings()
         }
+
+        selectedModel = ClaudeModel(rawValue: ud.string(forKey: "selectedModel") ?? "") ?? .sonnet
     }
 
     @Published var plan: Plan {
@@ -74,5 +76,8 @@ final class SettingsStore: ObservableObject {
                 defaults.set(data, forKey: "customPlan")
             }
         }
+    }
+    @Published var selectedModel: ClaudeModel {
+        didSet { defaults.set(selectedModel.rawValue, forKey: "selectedModel") }
     }
 }

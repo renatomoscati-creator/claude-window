@@ -32,7 +32,8 @@ final class IntegrationTests: XCTestCase {
         let score = WindowScore(score: 74, state: .efficient, confidence: .medium,
                                 reasons: ["Off-peak US hours"])
         let cap = QueryCapacity(minQueries: 26, maxQueries: 41,
-                                minTokens: 190_000, maxTokens: 280_000, confidence: .medium)
+                                minTokens: 190_000, maxTokens: 280_000,
+                                model: .sonnet, confidence: .medium)
 
         let data = APIHandlers.recommendation(surface: .desktop, mode: .limitRisk,
                                               score: score, capacity: cap)
@@ -57,7 +58,7 @@ final class IntegrationTests: XCTestCase {
             efficiencyScore: effScore.score, reliabilityScore: relScore.score
         )
         let cap = CapacityEstimator.estimate(
-            efficiencyScore: effScore.score, plan: .pro,
+            efficiencyScore: effScore.score, plan: .pro, model: .sonnet,
             workload: .standardWriting, confidence: conf
         )
         XCTAssertGreaterThan(effScore.score, 0)

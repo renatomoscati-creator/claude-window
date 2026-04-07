@@ -26,8 +26,16 @@ struct DropdownView: View {
     private var headerSection: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
-                    .font(.headline)
+                HStack(spacing: 4) {
+                    Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
+                        .font(.headline)
+                    Text(appState.settings.selectedModel.displayName)
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 1)
+                        .background(Color.secondary.opacity(0.15), in: Capsule())
+                }
                 HStack(spacing: 4) {
                     Text("Score: \(appState.primaryScore.map { "\($0.score)" } ?? "—")")
                         .font(.caption)
@@ -37,23 +45,34 @@ struct DropdownView: View {
                 }
             }
             Spacer()
-            modeToggle
+            modelAndModeToggle
         }
         .padding(.bottom, 8)
     }
 
-    private var modeToggle: some View {
-        Picker("", selection: Binding(
-            get: { appState.settings.operatingMode },
-            set: { appState.settings.operatingMode = $0 }
-        )) {
-            ForEach(OperatingMode.allCases, id: \.self) { mode in
-                Text(mode.displayName).tag(mode)
+    private var modelAndModeToggle: some View {
+        VStack(spacing: 4) {
+            Picker("", selection: Binding(
+                get: { appState.settings.selectedModel },
+                set: { appState.settings.selectedModel = $0 }
+            )) {
+                ForEach(ClaudeModel.allCases, id: \.self) {
+                    Text($0.displayName).tag($0)
+                }
             }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            Picker("", selection: Binding(
+                get: { appState.settings.operatingMode },
+                set: { appState.settings.operatingMode = $0 }
+            )) {
+                ForEach(OperatingMode.allCases, id: \.self) { mode in
+                    Text(mode.displayName).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
         }
-        .pickerStyle(.segmented)
-        .frame(width: 130)
-        .labelsHidden()
     }
 
     private var surfacesSection: some View {
@@ -73,16 +92,71 @@ struct DropdownView: View {
     }
 
     private var capacitySection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Estimated Capacity")
-                .font(.caption2).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Estimated Capacity")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Spacer()
+                if let cap = appState.capacity {
+                    Text(cap.model.displayName)
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.secondary.opacity(0.15), in: Capsule())
+                }
+            }
+
             if let cap = appState.capacity {
-                Label("\(cap.minQueries)–\(cap.maxQueries) queries",
-                      systemImage: "bubble.left.and.bubble.right").font(.caption)
-                Label(formatTokens(cap.minTokens, cap.maxTokens),
-                      systemImage: "character.cursor.ibeam").font(.caption)
+                let model = appState.settings.selectedModel
+                let plan = appState.settings.plan
+                let maxQueries = plan.baseQueryLimit(for: model)
+                let maxTokensPossible = maxQueries * WorkloadProfile.documentHeavy.tokensPerQuery(for: model)
+
+                // Queries Spectrum
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Label("Queries", systemImage: "bubble.left.and.bubble.right")
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Text("\(cap.minQueries)–\(cap.maxQueries)")
+                            .font(.caption.bold())
+                            .foregroundStyle(.primary)
+                    }
+                    SpectrumBar(
+                        minValue: cap.minQueries,
+                        maxValue: cap.maxQueries,
+                        maxPossible: maxQueries,
+                        metricType: .queries
+                    )
+                }
+
+                // Tokens Spectrum
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Label("Tokens", systemImage: "character.cursor.ibeam")
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Text(formatTokens(cap.minTokens, cap.maxTokens))
+                            .font(.caption.bold())
+                            .foregroundStyle(.primary)
+                    }
+                    SpectrumBar(
+                        minValue: cap.minTokens,
+                        maxValue: cap.maxTokens,
+                        maxPossible: maxTokensPossible,
+                        metricType: .tokens
+                    )
+                }
             } else {
-                Text("—").font(.caption).foregroundStyle(.secondary)
+                HStack {
+                    ProgressView().scaleEffect(0.7)
+                    Text("Calculating capacity...")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .padding(.vertical, 8)
@@ -143,11 +217,18 @@ struct DropdownView: View {
     }
 
     private func formatTokens(_ min: Int, _ max: Int) -> String {
-        "\(formatK(min))–\(formatK(max)) tokens"
+        if max >= 1_000_000 {
+            return "\(formatM(min))–\(formatM(max)) tokens"
+        }
+        return "\(formatK(min))–\(formatK(max)) tokens"
     }
 
     private func formatK(_ n: Int) -> String {
         n >= 1000 ? "\(n / 1000)K" : "\(n)"
+    }
+
+    private func formatM(_ n: Int) -> String {
+        "\(n / 1_000_000)M"
     }
 
     private func hourLabel(_ hour: Int) -> String {

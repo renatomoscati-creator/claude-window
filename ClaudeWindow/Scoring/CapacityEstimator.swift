@@ -5,13 +5,15 @@ enum CapacityEstimator {
     static func estimate(
         efficiencyScore: Int,
         plan: Plan,
+        model: ClaudeModel,
         workload: WorkloadProfile,
         confidence: Confidence,
         customPlan: CustomPlanSettings? = nil
     ) -> QueryCapacity {
-        let baseQueries = customPlan?.baseQueryLimit ?? plan.baseQueryLimit
+        let baseQueries = customPlan?.baseQueryLimit ?? plan.baseQueryLimit(for: model)
 
         // Scale base by efficiency: score=100 → 80% of base, score=0 → 0%
+        // The 0.80 ceiling reserves 20% headroom for burst/overhead.
         let efficiencyFactor = (Double(efficiencyScore) / 100.0) * 0.80
         let midEstimate = Double(baseQueries) * efficiencyFactor
 
@@ -25,11 +27,15 @@ enum CapacityEstimator {
         let minQ = Int(max(1, midEstimate * (1 - spread)))
         let maxQ = max(minQ, Int(midEstimate * (1 + spread)))
 
+        // Model-aware token calculation
+        let tokensPerQ = workload.tokensPerQuery(for: model)
+
         return QueryCapacity(
             minQueries: minQ,
             maxQueries: maxQ,
-            minTokens: minQ * workload.tokensPerQuery,
-            maxTokens: maxQ * workload.tokensPerQuery,
+            minTokens: minQ * tokensPerQ,
+            maxTokens: maxQ * tokensPerQ,
+            model: model,
             confidence: confidence
         )
     }

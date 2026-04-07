@@ -79,6 +79,7 @@ final class AppState: ObservableObject {
         capacity = CapacityEstimator.estimate(
             efficiencyScore: effScore.score,
             plan: settings.plan,
+            model: settings.selectedModel,
             workload: settings.workloadProfile,
             confidence: conf,
             customPlan: customPlan

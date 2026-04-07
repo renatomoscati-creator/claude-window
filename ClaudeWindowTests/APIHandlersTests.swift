@@ -26,7 +26,7 @@ final class APIHandlersTests: XCTestCase {
     func test_capacityResponse_hasRanges() throws {
         let cap = QueryCapacity(minQueries: 20, maxQueries: 40,
                                 minTokens: 40_000, maxTokens: 80_000,
-                                confidence: .medium)
+                                model: .sonnet, confidence: .medium)
         let json = APIHandlers.capacity(cap)
         let obj = try JSONSerialization.jsonObject(with: json) as! [String: Any]
         XCTAssertEqual(obj["estimated_queries_min"] as? Int, 20)
@@ -39,7 +39,7 @@ final class APIHandlersTests: XCTestCase {
         let score = makeScore(74, .efficient)
         let cap = QueryCapacity(minQueries: 20, maxQueries: 40,
                                 minTokens: 40_000, maxTokens: 80_000,
-                                confidence: .medium)
+                                model: .sonnet, confidence: .medium)
         let json = APIHandlers.recommendation(surface: .desktop, mode: .limitRisk,
                                               score: score, capacity: cap)
         let obj = try JSONSerialization.jsonObject(with: json) as! [String: Any]

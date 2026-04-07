@@ -22,6 +22,7 @@ enum APIHandlers {
         encode([
             "surface":               surface.rawValue,
             "mode":                  mode.rawValue,
+            "model":                 capacity.model.rawValue,
             "window_score":          score.score,
             "state":                 score.state.rawValue,
             "estimated_queries_min": capacity.minQueries,
@@ -35,6 +36,7 @@ enum APIHandlers {
 
     static func capacity(_ cap: QueryCapacity) -> Data {
         encode([
+            "model":                 cap.model.rawValue,
             "estimated_queries_min": cap.minQueries,
             "estimated_queries_max": cap.maxQueries,
             "estimated_tokens_min":  cap.minTokens,

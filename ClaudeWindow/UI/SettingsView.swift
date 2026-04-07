@@ -19,6 +19,14 @@ struct SettingsView: View {
             )) {
                 ForEach(Plan.allCases, id: \.self) { Text($0.displayName).tag($0) }
             }
+            Picker("Model", selection: Binding(
+                get: { appState.settings.selectedModel },
+                set: { appState.settings.selectedModel = $0 }
+            )) {
+                ForEach(ClaudeModel.allCases, id: \.self) {
+                    Text($0.displayName).tag($0)
+                }
+            }
             Picker("Workload Profile", selection: Binding(
                 get: { appState.settings.workloadProfile },
                 set: { appState.settings.workloadProfile = $0 }
