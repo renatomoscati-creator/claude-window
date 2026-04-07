@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Combine
 
 @MainActor
 final class AppState: ObservableObject {
@@ -19,6 +20,7 @@ final class AppState: ObservableObject {
     @Published var lastRefreshed: Date?
 
     private var refreshTask: Task<Void, Never>?
+    private var cancellables = Set<AnyCancellable>()
     private let apiServer = LocalAPIServer()
 
     init(settings: SettingsStore = SettingsStore(), telemetry: TelemetryStore = TelemetryStore()) {
@@ -29,6 +31,19 @@ final class AppState: ObservableObject {
         if settings.localAPIEnabled {
             apiServer.start(appState: self)
         }
+        setupBindings()
+    }
+
+    // MARK: — Bindings
+
+    private func setupBindings() {
+        // Auto-refresh when model changes (capacity estimates change)
+        settings.$selectedModel
+            .dropFirst()
+            .sink { [weak self] _ in
+                Task { await self?.refresh() }
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: — Refresh
