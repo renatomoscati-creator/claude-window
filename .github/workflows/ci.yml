@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -scheme ClaudeWindow \
+            -destination 'platform=macOS,arch=arm64' \
+            2>&1 | tail -20
