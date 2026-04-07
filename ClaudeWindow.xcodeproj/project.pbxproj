@@ -1,0 +1,605 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA000001000000000000001 /* ClaudeWindowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000101 /* ClaudeWindowApp.swift */; };
+		AA000001000000000000002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000102 /* AppState.swift */; };
+		AA000001000000000000003 /* Surface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000103 /* Surface.swift */; };
+		AA000001000000000000004 /* OperatingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000104 /* OperatingMode.swift */; };
+		AA000001000000000000005 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000105 /* Plan.swift */; };
+		AA000001000000000000006 /* WorkloadProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000106 /* WorkloadProfile.swift */; };
+		AA000001000000000000007 /* WindowScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000107 /* WindowScore.swift */; };
+		AA000001000000000000008 /* Capacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000108 /* Capacity.swift */; };
+		AA000001000000000000009 /* TimingHeuristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000109 /* TimingHeuristics.swift */; };
+		AA000001000000000000010 /* LimitEfficiencyScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000110 /* LimitEfficiencyScorer.swift */; };
+		AA000001000000000000011 /* ReliabilityScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000111 /* ReliabilityScorer.swift */; };
+		AA000001000000000000012 /* ConfidenceEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000112 /* ConfidenceEstimator.swift */; };
+		AA000001000000000000013 /* CapacityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000113 /* CapacityEstimator.swift */; };
+		AA000001000000000000014 /* AnthropicStatusFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000114 /* AnthropicStatusFetcher.swift */; };
+		AA000001000000000000015 /* StatusModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000115 /* StatusModels.swift */; };
+		AA000001000000000000016 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000116 /* SettingsStore.swift */; };
+		AA000001000000000000017 /* TelemetryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000117 /* TelemetryStore.swift */; };
+		AA000001000000000000018 /* LocalAPIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000118 /* LocalAPIServer.swift */; };
+		AA000001000000000000019 /* APIHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000119 /* APIHandlers.swift */; };
+		AA000001000000000000020 /* MenuBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000120 /* MenuBarIconView.swift */; };
+		AA000001000000000000021 /* DropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000121 /* DropdownView.swift */; };
+		AA000001000000000000022 /* SurfaceSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000122 /* SurfaceSectionView.swift */; };
+		AA000001000000000000023 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000123 /* OnboardingView.swift */; };
+		AA000001000000000000024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000124 /* SettingsView.swift */; };
+		AA000001000000000000025 /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000125 /* PlaceholderTests.swift */; };
+		AA000001000000000000026 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000126 /* ModelsTests.swift */; };
+		AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000127 /* TimingHeuristicsTests.swift */; };
+		AA000001000000000000028 /* StatusParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000128 /* StatusParserTests.swift */; };
+		AA000001000000000000029 /* LimitEfficiencyScorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */; };
+		AA000001000000000000030 /* ReliabilityScorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000131 /* ReliabilityScorerTests.swift */; };
+		AA000001000000000000031 /* ConfidenceEstimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000132 /* ConfidenceEstimatorTests.swift */; };
+		AA000001000000000000032 /* CapacityEstimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000133 /* CapacityEstimatorTests.swift */; };
+		AA000001000000000000033 /* BestWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000134 /* BestWindowTests.swift */; };
+		AA000001000000000000034 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000135 /* SettingsStoreTests.swift */; };
+		AA000001000000000000035 /* APIHandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000136 /* APIHandlersTests.swift */; };
+		AA000001000000000000036 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000137 /* IntegrationTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AA000001000000000000101 /* ClaudeWindowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeWindowApp.swift; sourceTree = "<group>"; };
+		AA000001000000000000102 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		AA000001000000000000103 /* Surface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surface.swift; sourceTree = "<group>"; };
+		AA000001000000000000104 /* OperatingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingMode.swift; sourceTree = "<group>"; };
+		AA000001000000000000105 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		AA000001000000000000106 /* WorkloadProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkloadProfile.swift; sourceTree = "<group>"; };
+		AA000001000000000000107 /* WindowScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowScore.swift; sourceTree = "<group>"; };
+		AA000001000000000000108 /* Capacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capacity.swift; sourceTree = "<group>"; };
+		AA000001000000000000109 /* TimingHeuristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingHeuristics.swift; sourceTree = "<group>"; };
+		AA000001000000000000110 /* LimitEfficiencyScorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEfficiencyScorer.swift; sourceTree = "<group>"; };
+		AA000001000000000000111 /* ReliabilityScorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityScorer.swift; sourceTree = "<group>"; };
+		AA000001000000000000112 /* ConfidenceEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceEstimator.swift; sourceTree = "<group>"; };
+		AA000001000000000000113 /* CapacityEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityEstimator.swift; sourceTree = "<group>"; };
+		AA000001000000000000114 /* AnthropicStatusFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnthropicStatusFetcher.swift; sourceTree = "<group>"; };
+		AA000001000000000000115 /* StatusModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusModels.swift; sourceTree = "<group>"; };
+		AA000001000000000000116 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		AA000001000000000000117 /* TelemetryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryStore.swift; sourceTree = "<group>"; };
+		AA000001000000000000118 /* LocalAPIServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAPIServer.swift; sourceTree = "<group>"; };
+		AA000001000000000000119 /* APIHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHandlers.swift; sourceTree = "<group>"; };
+		AA000001000000000000120 /* MenuBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconView.swift; sourceTree = "<group>"; };
+		AA000001000000000000121 /* DropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownView.swift; sourceTree = "<group>"; };
+		AA000001000000000000122 /* SurfaceSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceSectionView.swift; sourceTree = "<group>"; };
+		AA000001000000000000123 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		AA000001000000000000124 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AA000001000000000000125 /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000126 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000127 /* TimingHeuristicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingHeuristicsTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000128 /* StatusParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusParserTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEfficiencyScorerTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000131 /* ReliabilityScorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityScorerTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000132 /* ConfidenceEstimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceEstimatorTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000133 /* CapacityEstimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityEstimatorTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000134 /* BestWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestWindowTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000135 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000136 /* APIHandlersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHandlersTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000137 /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA000001000000000000200 /* ClaudeWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA000001000000000000201 /* ClaudeWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		AA000001000000000000300 /* ClaudeWindow */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000101 /* ClaudeWindowApp.swift */,
+				AA000001000000000000102 /* AppState.swift */,
+				AA000001000000000000310 /* Models */,
+				AA000001000000000000320 /* Scoring */,
+				AA000001000000000000330 /* Data */,
+				AA000001000000000000340 /* API */,
+				AA000001000000000000350 /* UI */,
+				AA000001000000000000130 /* Info.plist */,
+			);
+			path = ClaudeWindow;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000310 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000103 /* Surface.swift */,
+				AA000001000000000000104 /* OperatingMode.swift */,
+				AA000001000000000000105 /* Plan.swift */,
+				AA000001000000000000106 /* WorkloadProfile.swift */,
+				AA000001000000000000107 /* WindowScore.swift */,
+				AA000001000000000000108 /* Capacity.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000320 /* Scoring */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000109 /* TimingHeuristics.swift */,
+				AA000001000000000000110 /* LimitEfficiencyScorer.swift */,
+				AA000001000000000000111 /* ReliabilityScorer.swift */,
+				AA000001000000000000112 /* ConfidenceEstimator.swift */,
+				AA000001000000000000113 /* CapacityEstimator.swift */,
+			);
+			path = Scoring;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000330 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000114 /* AnthropicStatusFetcher.swift */,
+				AA000001000000000000115 /* StatusModels.swift */,
+				AA000001000000000000116 /* SettingsStore.swift */,
+				AA000001000000000000117 /* TelemetryStore.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000340 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000118 /* LocalAPIServer.swift */,
+				AA000001000000000000119 /* APIHandlers.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000350 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000120 /* MenuBarIconView.swift */,
+				AA000001000000000000121 /* DropdownView.swift */,
+				AA000001000000000000122 /* SurfaceSectionView.swift */,
+				AA000001000000000000123 /* OnboardingView.swift */,
+				AA000001000000000000124 /* SettingsView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000360 /* ClaudeWindowTests */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000125 /* PlaceholderTests.swift */,
+				AA000001000000000000126 /* ModelsTests.swift */,
+				AA000001000000000000127 /* TimingHeuristicsTests.swift */,
+				AA000001000000000000128 /* StatusParserTests.swift */,
+				AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */,
+				AA000001000000000000131 /* ReliabilityScorerTests.swift */,
+				AA000001000000000000132 /* ConfidenceEstimatorTests.swift */,
+				AA000001000000000000133 /* CapacityEstimatorTests.swift */,
+				AA000001000000000000134 /* BestWindowTests.swift */,
+				AA000001000000000000135 /* SettingsStoreTests.swift */,
+				AA000001000000000000136 /* APIHandlersTests.swift */,
+				AA000001000000000000137 /* IntegrationTests.swift */,
+			);
+			path = ClaudeWindowTests;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000370 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000200 /* ClaudeWindow.app */,
+				AA000001000000000000201 /* ClaudeWindowTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA000001000000000000380 = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000300 /* ClaudeWindow */,
+				AA000001000000000000360 /* ClaudeWindowTests */,
+				AA000001000000000000370 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA000001000000000000400 /* ClaudeWindow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA000001000000000000500 /* Build configuration list for PBXNativeTarget "ClaudeWindow" */;
+			buildPhases = (
+				AA000001000000000000410 /* Sources */,
+				AA000001000000000000420 /* Frameworks */,
+				AA000001000000000000430 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClaudeWindow;
+			productName = ClaudeWindow;
+			productReference = AA000001000000000000200 /* ClaudeWindow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AA000001000000000000401 /* ClaudeWindowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA000001000000000000501 /* Build configuration list for PBXNativeTarget "ClaudeWindowTests" */;
+			buildPhases = (
+				AA000001000000000000411 /* Sources */,
+				AA000001000000000000421 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA000001000000000000440 /* PBXTargetDependency */,
+			);
+			name = ClaudeWindowTests;
+			productName = ClaudeWindowTests;
+			productReference = AA000001000000000000201 /* ClaudeWindowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA000001000000000000600 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					AA000001000000000000400 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					AA000001000000000000401 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = AA000001000000000000400;
+					};
+				};
+			};
+			buildConfigurationList = AA000001000000000000502 /* Build configuration list for PBXProject "ClaudeWindow" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA000001000000000000380;
+			productRefGroup = AA000001000000000000370 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA000001000000000000400 /* ClaudeWindow */,
+				AA000001000000000000401 /* ClaudeWindowTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA000001000000000000410 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000001000000000000001 /* ClaudeWindowApp.swift in Sources */,
+				AA000001000000000000002 /* AppState.swift in Sources */,
+				AA000001000000000000003 /* Surface.swift in Sources */,
+				AA000001000000000000004 /* OperatingMode.swift in Sources */,
+				AA000001000000000000005 /* Plan.swift in Sources */,
+				AA000001000000000000006 /* WorkloadProfile.swift in Sources */,
+				AA000001000000000000007 /* WindowScore.swift in Sources */,
+				AA000001000000000000008 /* Capacity.swift in Sources */,
+				AA000001000000000000009 /* TimingHeuristics.swift in Sources */,
+				AA000001000000000000010 /* LimitEfficiencyScorer.swift in Sources */,
+				AA000001000000000000011 /* ReliabilityScorer.swift in Sources */,
+				AA000001000000000000012 /* ConfidenceEstimator.swift in Sources */,
+				AA000001000000000000013 /* CapacityEstimator.swift in Sources */,
+				AA000001000000000000014 /* AnthropicStatusFetcher.swift in Sources */,
+				AA000001000000000000015 /* StatusModels.swift in Sources */,
+				AA000001000000000000016 /* SettingsStore.swift in Sources */,
+				AA000001000000000000017 /* TelemetryStore.swift in Sources */,
+				AA000001000000000000018 /* LocalAPIServer.swift in Sources */,
+				AA000001000000000000019 /* APIHandlers.swift in Sources */,
+				AA000001000000000000020 /* MenuBarIconView.swift in Sources */,
+				AA000001000000000000021 /* DropdownView.swift in Sources */,
+				AA000001000000000000022 /* SurfaceSectionView.swift in Sources */,
+				AA000001000000000000023 /* OnboardingView.swift in Sources */,
+				AA000001000000000000024 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA000001000000000000411 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000001000000000000025 /* PlaceholderTests.swift in Sources */,
+				AA000001000000000000026 /* ModelsTests.swift in Sources */,
+				AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */,
+				AA000001000000000000028 /* StatusParserTests.swift in Sources */,
+				AA000001000000000000029 /* LimitEfficiencyScorerTests.swift in Sources */,
+				AA000001000000000000030 /* ReliabilityScorerTests.swift in Sources */,
+				AA000001000000000000031 /* ConfidenceEstimatorTests.swift in Sources */,
+				AA000001000000000000032 /* CapacityEstimatorTests.swift in Sources */,
+				AA000001000000000000033 /* BestWindowTests.swift in Sources */,
+				AA000001000000000000034 /* SettingsStoreTests.swift in Sources */,
+				AA000001000000000000035 /* APIHandlersTests.swift in Sources */,
+				AA000001000000000000036 /* IntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA000001000000000000420 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA000001000000000000421 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA000001000000000000430 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA000001000000000000440 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA000001000000000000400 /* ClaudeWindow */;
+			targetProxy = AA000001000000000000441 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		AA000001000000000000441 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA000001000000000000600 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA000001000000000000400;
+			remoteInfo = ClaudeWindow;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		AA000001000000000000510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA000001000000000000511 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AA000001000000000000512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ClaudeWindow/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.claudewindow.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		AA000001000000000000513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ClaudeWindow/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.claudewindow.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		AA000001000000000000514 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.claudewindow.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClaudeWindow.app/Contents/MacOS/ClaudeWindow";
+			};
+			name = Debug;
+		};
+		AA000001000000000000515 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.claudewindow.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClaudeWindow.app/Contents/MacOS/ClaudeWindow";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA000001000000000000500 /* Build configuration list for PBXNativeTarget "ClaudeWindow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000001000000000000512 /* Debug */,
+				AA000001000000000000513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA000001000000000000501 /* Build configuration list for PBXNativeTarget "ClaudeWindowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000001000000000000514 /* Debug */,
+				AA000001000000000000515 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA000001000000000000502 /* Build configuration list for PBXProject "ClaudeWindow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000001000000000000510 /* Debug */,
+				AA000001000000000000511 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = AA000001000000000000600 /* Project object */;
+}
