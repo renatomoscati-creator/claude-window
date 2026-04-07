@@ -108,6 +108,13 @@ struct DropdownView: View {
             }
 
             if let cap = appState.capacity {
+                let model = appState.settings.selectedModel
+                let plan = appState.settings.plan
+                let workload = appState.settings.workloadProfile
+                let maxQueries = plan.baseQueryLimit(for: model)
+                // Token ceiling: max queries × current workload's tokens/query
+                let maxTokens = maxQueries * workload.tokensPerQuery(for: model)
+
                 // Queries Spectrum
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
@@ -115,14 +122,14 @@ struct DropdownView: View {
                             .font(.caption)
                             .foregroundStyle(.primary)
                         Spacer()
-                        Text("\(cap.minQueries)–\(cap.maxQueries)")
+                        Text("\(cap.minQueries)–\(cap.maxQueries) / \(maxQueries)")
                             .font(.caption.bold())
                             .foregroundStyle(.primary)
                     }
                     SpectrumBar(
                         minValue: cap.minQueries,
                         maxValue: cap.maxQueries,
-                        maxPossible: cap.maxQueries,
+                        maxPossible: maxQueries,
                         metricType: .queries
                     )
                 }
@@ -134,14 +141,14 @@ struct DropdownView: View {
                             .font(.caption)
                             .foregroundStyle(.primary)
                         Spacer()
-                        Text(formatTokens(cap.minTokens, cap.maxTokens))
+                        Text("\(formatK(cap.minTokens))–\(formatK(cap.maxTokens)) / \(formatK(maxTokens))")
                             .font(.caption.bold())
                             .foregroundStyle(.primary)
                     }
                     SpectrumBar(
                         minValue: cap.minTokens,
                         maxValue: cap.maxTokens,
-                        maxPossible: cap.maxTokens,
+                        maxPossible: maxTokens,
                         metricType: .tokens
                     )
                 }
