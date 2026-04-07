@@ -45,8 +45,17 @@ final class LocalAPIServer {
                   let request = String(data: data, encoding: .utf8) else {
                 connection.cancel(); return
             }
-            let path = Self.parsePath(from: request)
+            let (method, path) = Self.parseMethodAndPath(from: request)
             Task { @MainActor [weak self] in
+                // Handle CORS preflight
+                if method == "OPTIONS" {
+                    self?.respondCORSPreflight(on: connection)
+                    return
+                }
+                guard method == "GET" else {
+                    self?.respond(body: APIHandlers.methodNotAllowed(), on: connection, statusCode: 405, statusMessage: "Method Not Allowed")
+                    return
+                }
                 let body = self?.handle(path: path) ?? APIHandlers.notFound()
                 self?.respond(body: body, on: connection)
             }
@@ -90,19 +99,29 @@ final class LocalAPIServer {
         }
     }
 
-    private func respond(body: Data, on connection: NWConnection) {
-        let header = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: \(body.count)\r\nAccess-Control-Allow-Origin: *\r\nConnection: close\r\n\r\n"
-        var response = header.data(using: .utf8)!
+    private func respond(body: Data, on connection: NWConnection, statusCode: Int = 200, statusMessage: String = "OK") {
+        let header = "HTTP/1.1 \(statusCode) \(statusMessage)\r\nContent-Type: application/json\r\nContent-Length: \(body.count)\r\nAccess-Control-Allow-Origin: *\r\nConnection: close\r\n\r\n"
+        var response = Data(header.utf8)
         response.append(body)
         connection.send(content: response, completion: .contentProcessed { _ in
             connection.cancel()
         })
     }
 
-    private static func parsePath(from request: String) -> String {
+    private func respondCORSPreflight(on connection: NWConnection) {
+        let header = "HTTP/1.1 204 No Content\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: GET, OPTIONS\r\nAccess-Control-Allow-Headers: Content-Type\r\nConnection: close\r\n\r\n"
+        let response = Data(header.utf8)
+        connection.send(content: response, completion: .contentProcessed { _ in
+            connection.cancel()
+        })
+    }
+
+    private static func parseMethodAndPath(from request: String) -> (method: String, path: String) {
         let lines = request.components(separatedBy: "\r\n")
         let parts = lines.first?.components(separatedBy: " ") ?? []
-        guard parts.count >= 2 else { return "/" }
-        return parts[1].components(separatedBy: "?").first ?? "/"
+        guard parts.count >= 2 else { return ("GET", "/") }
+        let method = parts[0]
+        let path = parts[1].components(separatedBy: "?").first ?? "/"
+        return (method, path)
     }
 }

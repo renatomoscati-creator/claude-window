@@ -66,6 +66,10 @@ enum APIHandlers {
         encode(["error": "not found"])
     }
 
+    static func methodNotAllowed() -> Data {
+        encode(["error": "method not allowed, use GET"])
+    }
+
     // MARK: — Helper
 
     static func encode(_ dict: [String: Any]) -> Data {

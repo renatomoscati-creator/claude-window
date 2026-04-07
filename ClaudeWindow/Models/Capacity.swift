@@ -9,8 +9,8 @@ struct QueryCapacity: Codable, Equatable {
 }
 
 struct BestWindow: Codable, Equatable {
-    let startHour: Int      // local hour 0-23
-    let endHour: Int
+    let startHour: Int      // UTC hour 0-23
+    let endHour: Int        // UTC hour 0-23
     let confidence: Confidence
     let reasons: [String]
 }

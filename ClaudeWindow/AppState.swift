@@ -52,12 +52,15 @@ final class AppState: ObservableObject {
 
         let primary = settings.primarySurface
         let mode    = settings.operatingMode
-        let activeScore = mode == .limitRisk
-            ? efficiencyScores[primary]!
-            : reliabilityScores[primary]!
 
-        let effScore = efficiencyScores[primary]!
-        let relScore = reliabilityScores[primary]!
+        guard let effScore = efficiencyScores[primary],
+              let relScore = reliabilityScores[primary] else {
+            // Scores haven't been computed yet — early exit
+            isRefreshing = false
+            return
+        }
+
+        let activeScore = mode == .limitRisk ? effScore : relScore
         let conf = ConfidenceEstimator.estimate(
             serviceStatus: serviceStatus,
             hasUserHistory: telemetry.hasHistory,

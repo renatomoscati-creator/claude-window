@@ -57,15 +57,15 @@ final class TimingHeuristicsTests: XCTestCase {
     }
 
     func test_holidayRegions_USHoliday_reducesUsPressure() {
-        // 2025-07-04 = Friday (US Independence Day)
+        // July 4, 2025 = US Independence Day
         var comps = DateComponents()
         comps.year = 2025; comps.month = 7; comps.day = 4
         comps.hour = 20; comps.minute = 0
         comps.timeZone = TimeZone(identifier: "UTC")
-        let holiday = Calendar(identifier: .gregorian).date(from: comps)!
+        let july4 = Calendar(identifier: .gregorian).date(from: comps)!
 
-        let normalScore = TimingHeuristics.pressureScore(at: tuesdayUTC(20), holidayRegions: [])
-        let holidayScore = TimingHeuristics.pressureScore(at: holiday, holidayRegions: [.us])
+        let normalScore = TimingHeuristics.pressureScore(at: july4, holidayRegions: [])
+        let holidayScore = TimingHeuristics.pressureScore(at: july4, holidayRegions: [.us])
         XCTAssertLessThan(holidayScore, normalScore)
     }
 }

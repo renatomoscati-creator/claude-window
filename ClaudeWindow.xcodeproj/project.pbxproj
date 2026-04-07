@@ -31,7 +31,7 @@
 		AA000001000000000000022 /* SurfaceSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000122 /* SurfaceSectionView.swift */; };
 		AA000001000000000000023 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000123 /* OnboardingView.swift */; };
 		AA000001000000000000024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000124 /* SettingsView.swift */; };
-		AA000001000000000000025 /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000125 /* PlaceholderTests.swift */; };
+		AA000001000000000000037 /* SpectrumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000138 /* SpectrumBar.swift */; };
 		AA000001000000000000026 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000126 /* ModelsTests.swift */; };
 		AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000127 /* TimingHeuristicsTests.swift */; };
 		AA000001000000000000028 /* StatusParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000128 /* StatusParserTests.swift */; };
@@ -70,7 +70,7 @@
 		AA000001000000000000122 /* SurfaceSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceSectionView.swift; sourceTree = "<group>"; };
 		AA000001000000000000123 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AA000001000000000000124 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		AA000001000000000000125 /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000138 /* SpectrumBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumBar.swift; sourceTree = "<group>"; };
 		AA000001000000000000126 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000127 /* TimingHeuristicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingHeuristicsTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000128 /* StatusParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusParserTests.swift; sourceTree = "<group>"; };
@@ -153,6 +153,7 @@
 			children = (
 				AA000001000000000000120 /* MenuBarIconView.swift */,
 				AA000001000000000000121 /* DropdownView.swift */,
+				AA000001000000000000138 /* SpectrumBar.swift */,
 				AA000001000000000000122 /* SurfaceSectionView.swift */,
 				AA000001000000000000123 /* OnboardingView.swift */,
 				AA000001000000000000124 /* SettingsView.swift */,
@@ -163,7 +164,6 @@
 		AA000001000000000000360 /* ClaudeWindowTests */ = {
 			isa = PBXGroup;
 			children = (
-				AA000001000000000000125 /* PlaceholderTests.swift */,
 				AA000001000000000000126 /* ModelsTests.swift */,
 				AA000001000000000000127 /* TimingHeuristicsTests.swift */,
 				AA000001000000000000128 /* StatusParserTests.swift */,
@@ -301,6 +301,7 @@
 				AA000001000000000000022 /* SurfaceSectionView.swift in Sources */,
 				AA000001000000000000023 /* OnboardingView.swift in Sources */,
 				AA000001000000000000024 /* SettingsView.swift in Sources */,
+				AA000001000000000000037 /* SpectrumBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,7 +309,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA000001000000000000025 /* PlaceholderTests.swift in Sources */,
 				AA000001000000000000026 /* ModelsTests.swift in Sources */,
 				AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */,
 				AA000001000000000000028 /* StatusParserTests.swift in Sources */,
