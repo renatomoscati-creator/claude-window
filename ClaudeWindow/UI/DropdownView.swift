@@ -105,7 +105,7 @@ struct DropdownView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Best Next Window").font(.caption2).foregroundStyle(.secondary)
             if let bw = appState.bestWindow {
-                Text("\(hourLabel(bw.startHour))–\(hourLabel(bw.endHour)) local · \(bw.confidence.rawValue.capitalized) confidence")
+                Text("\(hourLabel(bw.startHour))–\(hourLabel(bw.endHour)) UTC · \(bw.confidence.rawValue.capitalized) confidence")
                     .font(.caption)
             } else {
                 Text("Current window is already favorable")

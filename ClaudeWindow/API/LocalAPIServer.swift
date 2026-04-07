@@ -14,11 +14,13 @@ final class LocalAPIServer {
 
         let params = NWParameters.tcp
         params.allowLocalEndpointReuse = true
+        // Restrict to loopback only — never bind to LAN interfaces
+        params.requiredLocalEndpoint = NWEndpoint.hostPort(
+            host: NWEndpoint.Host("127.0.0.1"),
+            port: NWEndpoint.Port(rawValue: Self.port)!
+        )
 
-        guard let listener = try? NWListener(
-            using: params,
-            on: NWEndpoint.Port(rawValue: Self.port)!
-        ) else { return }
+        guard let listener = try? NWListener(using: params, on: NWEndpoint.Port(rawValue: Self.port)!) else { return }
 
         self.listener = listener
 
