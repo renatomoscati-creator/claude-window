@@ -108,11 +108,6 @@ struct DropdownView: View {
             }
 
             if let cap = appState.capacity {
-                let model = appState.settings.selectedModel
-                let plan = appState.settings.plan
-                let maxQueries = plan.baseQueryLimit(for: model)
-                let maxTokensPossible = maxQueries * WorkloadProfile.documentHeavy.tokensPerQuery(for: model)
-
                 // Queries Spectrum
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
@@ -127,7 +122,7 @@ struct DropdownView: View {
                     SpectrumBar(
                         minValue: cap.minQueries,
                         maxValue: cap.maxQueries,
-                        maxPossible: maxQueries,
+                        maxPossible: cap.maxQueries,
                         metricType: .queries
                     )
                 }
@@ -146,7 +141,7 @@ struct DropdownView: View {
                     SpectrumBar(
                         minValue: cap.minTokens,
                         maxValue: cap.maxTokens,
-                        maxPossible: maxTokensPossible,
+                        maxPossible: cap.maxTokens,
                         metricType: .tokens
                     )
                 }
