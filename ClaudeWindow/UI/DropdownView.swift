@@ -18,53 +18,56 @@ struct DropdownView: View {
             actionsSection
         }
         .padding(12)
-        .frame(width: 300)
+        .frame(width: 360)
     }
 
     // MARK: — Sections
 
     private var headerSection: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
-                    .font(.headline)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
+                        .font(.headline)
+                    HStack(spacing: 4) {
+                        Text("Score: \(appState.primaryScore.map { "\($0.score)" } ?? "—")")
+                            .font(.caption)
+                        Text("·").foregroundStyle(.secondary)
+                        Text("Confidence: \(appState.primaryScore?.confidence.rawValue.capitalized ?? "—")")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
                 HStack(spacing: 4) {
-                    Text("Score: \(appState.primaryScore.map { "\($0.score)" } ?? "—")")
-                        .font(.caption)
-                    Text("·").foregroundStyle(.secondary)
-                    Text("Confidence: \(appState.primaryScore?.confidence.rawValue.capitalized ?? "—")")
-                        .font(.caption).foregroundStyle(.secondary)
+                    Picker("", selection: Binding(
+                        get: { appState.settings.selectedModel },
+                        set: { appState.settings.selectedModel = $0 }
+                    )) {
+                        ForEach(ClaudeModel.allCases, id: \.self) {
+                            Text($0.displayName).tag($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    .frame(width: 130)
                 }
             }
-            Spacer()
-            modelAndModeToggle
+            HStack {
+                Spacer()
+                Picker("", selection: Binding(
+                    get: { appState.settings.operatingMode },
+                    set: { appState.settings.operatingMode = $0 }
+                )) {
+                    ForEach(OperatingMode.allCases, id: \.self) { mode in
+                        Text(mode.displayName).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .frame(width: 180)
+            }
         }
         .padding(.bottom, 8)
-    }
-
-    private var modelAndModeToggle: some View {
-        VStack(spacing: 4) {
-            Picker("", selection: Binding(
-                get: { appState.settings.selectedModel },
-                set: { appState.settings.selectedModel = $0 }
-            )) {
-                ForEach(ClaudeModel.allCases, id: \.self) {
-                    Text($0.displayName).tag($0)
-                }
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            Picker("", selection: Binding(
-                get: { appState.settings.operatingMode },
-                set: { appState.settings.operatingMode = $0 }
-            )) {
-                ForEach(OperatingMode.allCases, id: \.self) { mode in
-                    Text(mode.displayName).tag(mode)
-                }
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-        }
     }
 
     private var surfacesSection: some View {
