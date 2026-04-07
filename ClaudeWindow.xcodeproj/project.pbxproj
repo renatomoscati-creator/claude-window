@@ -32,6 +32,7 @@
 		AA000001000000000000023 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000123 /* OnboardingView.swift */; };
 		AA000001000000000000024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000124 /* SettingsView.swift */; };
 		AA000001000000000000025 /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000125 /* PlaceholderTests.swift */; };
+		AA000001000000000000026 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000126 /* ModelsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		AA000001000000000000123 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AA000001000000000000124 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA000001000000000000125 /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000126 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA000001000000000000200 /* ClaudeWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000001000000000000201 /* ClaudeWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				AA000001000000000000125 /* PlaceholderTests.swift */,
+				AA000001000000000000126 /* ModelsTests.swift */,
 			);
 			path = ClaudeWindowTests;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA000001000000000000025 /* PlaceholderTests.swift in Sources */,
+				AA000001000000000000026 /* ModelsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
