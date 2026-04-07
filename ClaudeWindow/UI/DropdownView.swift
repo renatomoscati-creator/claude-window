@@ -26,16 +26,8 @@ struct DropdownView: View {
     private var headerSection: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
-                    Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
-                        .font(.headline)
-                    Text(appState.settings.selectedModel.displayName)
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 1)
-                        .background(Color.secondary.opacity(0.15), in: Capsule())
-                }
+                Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
+                    .font(.headline)
                 HStack(spacing: 4) {
                     Text("Score: \(appState.primaryScore.map { "\($0.score)" } ?? "—")")
                         .font(.caption)
