@@ -31,8 +31,8 @@ enum LimitEfficiencyScorer {
     private static func windowState(for score: Int) -> WindowState {
         switch score {
         case 70...100: return .efficient
-        case 45..<70:  return .average
-        case 25..<45:  return .highRisk
+        case 40..<70:  return .average
+        case 22..<40:  return .highRisk
         default:       return .poor
         }
     }
@@ -67,7 +67,7 @@ enum LimitEfficiencyScorer {
         if serviceStatus.degradedComponentCount > 0 {
             reasons.append("\(serviceStatus.degradedComponentCount) component(s) currently degraded")
         }
-        if !holidayRegions.isEmpty {
+        if TimingHeuristics.hasActiveHoliday(on: date, in: holidayRegions) {
             reasons.append("Regional holiday(s) reduce expected demand")
         }
         return Array(reasons.prefix(5))

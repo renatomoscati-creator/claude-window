@@ -114,6 +114,11 @@ enum TimingHeuristics {
 
     // MARK: — Holiday detection
 
+    /// Returns true if today is an observed holiday in any of the configured regions.
+    static func hasActiveHoliday(on date: Date = Date(), in regions: Set<HolidayRegion>) -> Bool {
+        return regions.contains { isHoliday(date, region: $0, regions: regions) }
+    }
+
     private static func isHoliday(_ date: Date, region: HolidayRegion, regions: Set<HolidayRegion>) -> Bool {
         guard regions.contains(region) else { return false }
         let cal   = utcCalendar()

@@ -49,7 +49,7 @@ struct DropdownView: View {
                     }
                     .pickerStyle(.segmented)
                     .labelsHidden()
-                    .frame(width: 130)
+                    .fixedSize()
                 }
             }
             HStack {

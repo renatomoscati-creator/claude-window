@@ -17,9 +17,12 @@ enum ConfidenceEstimator {
         // > 600s adds 0
 
         // Signal agreement
+        // Efficiency (timing-based) and Reliability (service-health-based) measure different
+        // dimensions, so large divergences are expected when service is up at peak hours.
+        // Only penalise extreme disagreement (>70 points).
         let divergence = abs(efficiencyScore - reliabilityScore)
-        if divergence < 20      { points += 2 }
-        else if divergence < 40 { points += 1 }
+        if divergence < 40      { points += 2 }
+        else if divergence < 70 { points += 1 }
 
         // User history
         if hasUserHistory { points += 1 }
