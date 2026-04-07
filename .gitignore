@@ -1,0 +1,9 @@
+.worktrees/
+.claude/worktrees/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+DerivedData/
+*.xccheckout
+*.moved-aside
+
