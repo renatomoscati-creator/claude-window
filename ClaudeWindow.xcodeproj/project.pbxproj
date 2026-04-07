@@ -42,6 +42,7 @@
 		AA000001000000000000033 /* BestWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000134 /* BestWindowTests.swift */; };
 		AA000001000000000000034 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000135 /* SettingsStoreTests.swift */; };
 		AA000001000000000000035 /* APIHandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000136 /* APIHandlersTests.swift */; };
+		AA000001000000000000036 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000137 /* IntegrationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		AA000001000000000000134 /* BestWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestWindowTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000135 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000136 /* APIHandlersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHandlersTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000137 /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA000001000000000000200 /* ClaudeWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000001000000000000201 /* ClaudeWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +174,7 @@
 				AA000001000000000000134 /* BestWindowTests.swift */,
 				AA000001000000000000135 /* SettingsStoreTests.swift */,
 				AA000001000000000000136 /* APIHandlersTests.swift */,
+				AA000001000000000000137 /* IntegrationTests.swift */,
 			);
 			path = ClaudeWindowTests;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				AA000001000000000000033 /* BestWindowTests.swift in Sources */,
 				AA000001000000000000034 /* SettingsStoreTests.swift in Sources */,
 				AA000001000000000000035 /* APIHandlersTests.swift in Sources */,
+				AA000001000000000000036 /* IntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
