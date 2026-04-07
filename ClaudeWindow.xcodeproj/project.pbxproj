@@ -37,6 +37,9 @@
 		AA000001000000000000028 /* StatusParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000128 /* StatusParserTests.swift */; };
 		AA000001000000000000029 /* LimitEfficiencyScorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */; };
 		AA000001000000000000030 /* ReliabilityScorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000131 /* ReliabilityScorerTests.swift */; };
+		AA000001000000000000031 /* ConfidenceEstimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000132 /* ConfidenceEstimatorTests.swift */; };
+		AA000001000000000000032 /* CapacityEstimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000133 /* CapacityEstimatorTests.swift */; };
+		AA000001000000000000033 /* BestWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000134 /* BestWindowTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +73,9 @@
 		AA000001000000000000128 /* StatusParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusParserTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEfficiencyScorerTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000131 /* ReliabilityScorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityScorerTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000132 /* ConfidenceEstimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceEstimatorTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000133 /* CapacityEstimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityEstimatorTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000134 /* BestWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestWindowTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA000001000000000000200 /* ClaudeWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000001000000000000201 /* ClaudeWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +163,9 @@
 				AA000001000000000000128 /* StatusParserTests.swift */,
 				AA000001000000000000129 /* LimitEfficiencyScorerTests.swift */,
 				AA000001000000000000131 /* ReliabilityScorerTests.swift */,
+				AA000001000000000000132 /* ConfidenceEstimatorTests.swift */,
+				AA000001000000000000133 /* CapacityEstimatorTests.swift */,
+				AA000001000000000000134 /* BestWindowTests.swift */,
 			);
 			path = ClaudeWindowTests;
 			sourceTree = "<group>";
@@ -296,6 +305,9 @@
 				AA000001000000000000028 /* StatusParserTests.swift in Sources */,
 				AA000001000000000000029 /* LimitEfficiencyScorerTests.swift in Sources */,
 				AA000001000000000000030 /* ReliabilityScorerTests.swift in Sources */,
+				AA000001000000000000031 /* ConfidenceEstimatorTests.swift in Sources */,
+				AA000001000000000000032 /* CapacityEstimatorTests.swift in Sources */,
+				AA000001000000000000033 /* BestWindowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
