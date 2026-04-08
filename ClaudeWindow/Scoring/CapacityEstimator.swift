@@ -70,28 +70,62 @@ enum BestWindowBuilder {
         lookAheadHours: Int = 24,
         holidayRegions: Set<HolidayRegion> = []
     ) -> BestWindow? {
-        let windows = TimingHeuristics.bestOffPeakWindows(
-            from: date, lookAheadHours: lookAheadHours, holidayRegions: holidayRegions
-        )
-        guard let best = windows.first else { return nil }
+        // If we're already in a low-pressure window return nil so the UI
+        // shows "Current window is already favorable" instead of a future slot.
+        let currentPressure = TimingHeuristics.pressureScore(at: date, holidayRegions: holidayRegions)
+        if currentPressure < 0.35 { return nil }
 
-        let confidence: Confidence = best.pressureScore < 0.2 ? .high
-                                   : best.pressureScore < 0.35 ? .medium : .low
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+
+        // Build future hours (skip offset 0 = now).
+        var hours: [(hour: Int, pressure: Double)] = []
+        for offset in 1..<lookAheadHours {
+            guard let t = cal.date(byAdding: .hour, value: offset, to: date) else { continue }
+            let h = cal.component(.hour, from: t)
+            let p = TimingHeuristics.pressureScore(at: t, holidayRegions: holidayRegions)
+            hours.append((h, p))
+        }
+
+        // Find the earliest good hour; fall back to least-bad if nothing is great.
+        let goodThreshold: Double = 0.40
+        let fallbackThreshold: Double = 0.55
+        var startIdx: Int? = hours.firstIndex(where: { $0.pressure < goodThreshold })
+        if startIdx == nil {
+            startIdx = hours.firstIndex(where: { $0.pressure < fallbackThreshold })
+        }
+        guard let firstIdx = startIdx else { return nil }
+
+        // Extend forward to find the end of this consecutive low-pressure block.
+        let startHour = hours[firstIdx].hour
+        var blockMinPressure = hours[firstIdx].pressure
+        var endIdx = firstIdx
+        let blockCap = Swift.min(firstIdx + 12, hours.count)
+        for i in (firstIdx + 1)..<blockCap {
+            if hours[i].pressure < goodThreshold {
+                blockMinPressure = Swift.min(blockMinPressure, hours[i].pressure)
+                endIdx = i
+            } else {
+                break
+            }
+        }
+        let endHour = (hours[endIdx].hour + 1) % 24
+
+        let confidence: Confidence = blockMinPressure < 0.20 ? .high
+                                   : blockMinPressure < 0.30 ? .medium : .low
 
         var reasons: [String] = []
-        if best.pressureScore < 0.25 {
-            reasons.append("US off-hours — minimal estimated demand")
-        }
-        if best.startHour >= 1 && best.startHour <= 7 {
+        if startHour >= 1 && startHour <= 7 {
             reasons.append("Global overnight — lowest multi-region overlap")
-        }
-        if reasons.isEmpty {
+        } else if blockMinPressure < 0.25 {
+            reasons.append("US off-hours — minimal estimated demand")
+        } else {
             reasons.append("Relatively low estimated demand for this window")
         }
 
         return BestWindow(
-            startHour: best.startHour,
-            endHour: best.endHour,
+            startHour: startHour,
+            endHour: endHour,
             confidence: confidence,
             reasons: reasons
         )
