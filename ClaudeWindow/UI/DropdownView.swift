@@ -24,48 +24,47 @@ struct DropdownView: View {
     // MARK: — Sections
 
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
-                        .font(.headline)
-                    HStack(spacing: 4) {
-                        Text("Score: \(appState.primaryScore.map { "\($0.score)" } ?? "—")")
-                            .font(.caption)
-                        Text("·").foregroundStyle(.secondary)
-                        Text("Confidence: \(appState.primaryScore?.confidence.rawValue.capitalized ?? "—")")
-                            .font(.caption).foregroundStyle(.secondary)
-                    }
-                }
+        VStack(alignment: .leading, spacing: 8) {
+            // Row 1: State label + score/confidence — full width, never truncated
+            HStack(alignment: .firstTextBaseline) {
+                Text(appState.primaryScore?.state.displayLabel ?? "Checking...")
+                    .font(.headline)
                 Spacer()
-                HStack(spacing: 4) {
-                    Picker("", selection: Binding(
-                        get: { appState.settings.selectedModel },
-                        set: { appState.settings.selectedModel = $0 }
-                    )) {
-                        ForEach(ClaudeModel.allCases, id: \.self) {
-                            Text($0.displayName).tag($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                    .fixedSize()
+                if let s = appState.primaryScore {
+                    Text("\(s.score)")
+                        .font(.headline.monospacedDigit())
+                    Text("·").foregroundStyle(.secondary).font(.caption)
+                    Text(s.confidence.rawValue.capitalized)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 6).padding(.vertical, 2)
+                        .background(Color.secondary.opacity(0.12), in: Capsule())
                 }
             }
-            HStack {
-                Spacer()
-                Picker("", selection: Binding(
-                    get: { appState.settings.operatingMode },
-                    set: { appState.settings.operatingMode = $0 }
-                )) {
-                    ForEach(OperatingMode.allCases, id: \.self) { mode in
-                        Text(mode.displayName).tag(mode)
-                    }
+
+            // Row 2: Model picker (short names keep it compact)
+            Picker("", selection: Binding(
+                get: { appState.settings.selectedModel },
+                set: { appState.settings.selectedModel = $0 }
+            )) {
+                ForEach(ClaudeModel.allCases, id: \.self) {
+                    Text($0.shortName).tag($0)
                 }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-                .frame(width: 180)
             }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            // Row 3: Mode toggle
+            Picker("", selection: Binding(
+                get: { appState.settings.operatingMode },
+                set: { appState.settings.operatingMode = $0 }
+            )) {
+                ForEach(OperatingMode.allCases, id: \.self) { mode in
+                    Text(mode.displayName).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
         }
         .padding(.bottom, 8)
     }
@@ -88,19 +87,8 @@ struct DropdownView: View {
 
     private var capacitySection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Estimated Capacity")
-                    .font(.caption2).foregroundStyle(.secondary)
-                Spacer()
-                if let cap = appState.capacity {
-                    Text(cap.model.displayName)
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.secondary.opacity(0.15), in: Capsule())
-                }
-            }
+            Text("Estimated Capacity")
+                .font(.caption2).foregroundStyle(.secondary)
 
             if let cap = appState.capacity {
                 let model = appState.settings.selectedModel

@@ -16,6 +16,15 @@ enum ClaudeModel: String, Codable, CaseIterable, Identifiable {
         }
     }
 
+    /// Short name for compact UI (picker segments, badges).
+    var shortName: String {
+        switch self {
+        case .haiku:  return "Haiku"
+        case .sonnet: return "Sonnet"
+        case .opus:   return "Opus"
+        }
+    }
+
     /// Relative token consumption multiplier vs Sonnet baseline (1.0).
     /// Haiku is more concise (~60% of Sonnet tokens/query).
     /// Opus is more verbose and reasoning-heavy (~2.0x Sonnet tokens/query).
