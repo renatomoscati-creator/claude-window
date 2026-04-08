@@ -106,9 +106,12 @@ struct DropdownView: View {
                 let model = appState.settings.selectedModel
                 let plan = appState.settings.plan
                 let workload = appState.settings.workloadProfile
-                let maxQueries = plan.baseQueryLimit(for: model)
-                // Token ceiling: max queries × current workload's tokens/query
-                let maxTokens = maxQueries * workload.tokensPerQuery(for: model)
+                let customPlan = plan == .custom ? appState.settings.customPlan : nil
+                // Token ceiling: fixed per plan (model-independent).
+                let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
+                // Query ceiling: derived from token budget ÷ tokens-per-query.
+                let maxQueries = max(1, tokenBudget / workload.tokensPerQuery(for: model))
+                let maxTokens = tokenBudget
 
                 // Queries Spectrum
                 VStack(alignment: .leading, spacing: 4) {

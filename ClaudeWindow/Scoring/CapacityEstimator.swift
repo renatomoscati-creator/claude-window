@@ -10,7 +10,19 @@ enum CapacityEstimator {
         confidence: Confidence,
         customPlan: CustomPlanSettings? = nil
     ) -> QueryCapacity {
-        let baseQueries = customPlan?.baseQueryLimit ?? plan.baseQueryLimit(for: model)
+        // Token budget is the single source of truth.
+        // For custom plans the user sets a token limit directly; for standard
+        // plans we use the plan's 5-hour rolling token budget.
+        let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
+
+        // Tokens consumed per query for this model + workload combination.
+        // Haiku responses are shorter (0.6×), Opus longer (2.0×) vs Sonnet.
+        let tokensPerQ = workload.tokensPerQuery(for: model)
+
+        // Derived query ceiling: how many queries fit inside the token budget.
+        // This naturally gives Haiku more queries and Opus fewer — without any
+        // separate model multiplier that would cause double-counting.
+        let baseQueries = max(1, tokenBudget / tokensPerQ)
 
         // Scale base by efficiency: score=100 → 80% of base, score=0 → 0%.
         // The 0.80 ceiling reserves 20% headroom for burst/overhead.
@@ -39,9 +51,6 @@ enum CapacityEstimator {
 
         let minQ = Int(max(1, midEstimate * (1 - downsideSpread)))
         let maxQ = max(minQ, Int(min(midEstimate * (1 + upsideSpread), Double(baseQueries))))
-
-        // Model-aware token calculation
-        let tokensPerQ = workload.tokensPerQuery(for: model)
 
         return QueryCapacity(
             minQueries: minQ,
