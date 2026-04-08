@@ -8,7 +8,9 @@ final class SettingsStore: ObservableObject {
         let ud = UserDefaults(suiteName: suiteName) ?? .standard
         self.defaults = ud
         // Load all stored values
-        plan               = Plan(rawValue: ud.string(forKey: "plan") ?? "") ?? .pro
+        // Migrate legacy "max" raw value → "max5" (Max 5× is the original Max tier).
+        let planRaw = ud.string(forKey: "plan") ?? ""
+        plan = Plan(rawValue: planRaw == "max" ? "max5" : planRaw) ?? .pro
         primarySurface     = Surface(rawValue: ud.string(forKey: "primarySurface") ?? "") ?? .desktop
         operatingMode      = OperatingMode(rawValue: ud.string(forKey: "operatingMode") ?? "") ?? .limitRisk
         workloadProfile    = WorkloadProfile(rawValue: ud.string(forKey: "workloadProfile") ?? "") ?? .standardWriting
