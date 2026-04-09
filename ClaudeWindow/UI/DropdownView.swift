@@ -121,11 +121,18 @@ struct DropdownView: View {
                 }
 
                 // Tokens Spectrum
+                let tokensPerQ = workload.tokensPerQuery(for: model)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Label("Tokens", systemImage: "character.cursor.ibeam")
                             .font(.caption)
                             .foregroundStyle(.primary)
+                        Text("·")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                        Text("~\(formatK(tokensPerQ))/query")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                         Spacer()
                         Text("\(formatK(cap.minTokens))–\(formatK(cap.maxTokens)) / \(formatK(maxTokens))")
                             .font(.caption.bold())
@@ -184,16 +191,10 @@ struct DropdownView: View {
             }
             .buttonStyle(.plain).disabled(appState.isRefreshing)
             Spacer()
-            if #available(macOS 14.0, *) {
-                SettingsLink {
-                    Label("Settings", systemImage: "gear").font(.caption)
-                }
-            } else {
-                Button(action: openSettings) {
-                    Label("Settings", systemImage: "gear").font(.caption)
-                }
-                .buttonStyle(.plain)
+            Button(action: openSettings) {
+                Label("Settings", systemImage: "gear").font(.caption)
             }
+            .buttonStyle(.plain)
         }
         .padding(.top, 8)
     }
@@ -201,7 +202,10 @@ struct DropdownView: View {
     // MARK: — Helpers
 
     private func openSettings() {
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 
     private func formatTokens(_ min: Int, _ max: Int) -> String {
