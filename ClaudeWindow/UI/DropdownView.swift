@@ -191,21 +191,23 @@ struct DropdownView: View {
             }
             .buttonStyle(.plain).disabled(appState.isRefreshing)
             Spacer()
-            Button(action: openSettings) {
-                Label("Settings", systemImage: "gear").font(.caption)
+            if #available(macOS 14.0, *) {
+                SettingsButtonMacOS14()
+            } else {
+                Button(action: openSettingsFallback) {
+                    Label("Settings", systemImage: "gear").font(.caption)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
         .padding(.top, 8)
     }
 
     // MARK: — Helpers
 
-    private func openSettings() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-            NSApp.activate(ignoringOtherApps: true)
-        }
+    private func openSettingsFallback() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
     }
 
     private func formatTokens(_ min: Int, _ max: Int) -> String {
@@ -226,5 +228,16 @@ struct DropdownView: View {
     private func hourLabel(_ hour: Int) -> String {
         let h = hour % 12 == 0 ? 12 : hour % 12
         return "\(h)\(hour < 12 ? "am" : "pm")"
+    }
+}
+
+@available(macOS 14.0, *)
+private struct SettingsButtonMacOS14: View {
+    @Environment(\.openSettings) private var openSettings
+    var body: some View {
+        Button(action: { openSettings() }) {
+            Label("Settings", systemImage: "gear").font(.caption)
+        }
+        .buttonStyle(.plain)
     }
 }
