@@ -16,16 +16,21 @@ enum CapacityEstimator {
         let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
 
         // Tokens consumed per query for this model + workload combination.
-        // Haiku responses are shorter (0.6×), Opus longer (2.0×) vs Sonnet.
+        // tokensPerQuery values are session-weighted averages (not first-query cost)
+        // because context accumulates quadratically: total cost ∝ n² where n is
+        // the number of turns. The per-model multiplier encodes the 1:3:5 pricing
+        // ratio (Haiku:Sonnet:Opus), so Haiku gets ~3× as many queries as Sonnet
+        // on the same budget and Opus gets ~0.6× as many.
         let tokensPerQ = workload.tokensPerQuery(for: model)
 
-        // Derived query ceiling: how many queries fit inside the token budget.
-        // This naturally gives Haiku more queries and Opus fewer — without any
-        // separate model multiplier that would cause double-counting.
+        // Derived query ceiling: how many queries fit at session-average token cost.
+        // This is a theoretical maximum, not an expected value.
         let baseQueries = max(1, tokenBudget / tokensPerQ)
 
         // Scale base by efficiency: score=100 → 80% of base, score=0 → 0%.
-        // The 0.80 ceiling reserves 20% headroom for burst/overhead.
+        // The 0.80 ceiling reserves headroom for burst/overhead. Context-growth
+        // is already embedded in the session-average tokensPerQuery values rather
+        // than being applied as a second multiplier here.
         let efficiencyFactor = (Double(efficiencyScore) / 100.0) * 0.80
         let midEstimate = Double(baseQueries) * efficiencyFactor
 

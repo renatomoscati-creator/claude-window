@@ -26,13 +26,19 @@ enum ClaudeModel: String, Codable, CaseIterable, Identifiable {
     }
 
     /// Relative token consumption multiplier vs Sonnet baseline (1.0).
-    /// Haiku is more concise (~60% of Sonnet tokens/query).
-    /// Opus is more verbose and reasoning-heavy (~2.0x Sonnet tokens/query).
+    ///
+    /// Derived from the API pricing ratio (input $/Mtok): Haiku $1, Sonnet $3, Opus $5.
+    /// Empirically confirmed by observed session capacities — Sonnet delivers ≈3× fewer
+    /// queries than Haiku and Opus ≈1.67× fewer than Sonnet on the same plan budget.
+    ///
+    ///   Haiku  = 1/3  ≈ 0.33  (3× cheaper per token than Sonnet)
+    ///   Sonnet = 1.0          (baseline)
+    ///   Opus   = 5/3  ≈ 1.67  (5/3× more expensive than Sonnet, 5× vs Haiku)
     var tokensPerQueryMultiplier: Double {
         switch self {
-        case .haiku:  return 0.6
+        case .haiku:  return 1.0 / 3.0   // ≈ 0.333
         case .sonnet: return 1.0
-        case .opus:   return 2.0
+        case .opus:   return 5.0 / 3.0   // ≈ 1.667
         }
     }
 
