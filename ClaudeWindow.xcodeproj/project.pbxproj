@@ -33,6 +33,7 @@
 		AA000001000000000000024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000124 /* SettingsView.swift */; };
 		AA000001000000000000037 /* SpectrumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000138 /* SpectrumBar.swift */; };
 		AA000001000000000000038 /* ClaudeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000139 /* ClaudeModel.swift */; };
+		AA000001000000000000039 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000141 /* AppIcon.icns */; };
 		AA000001000000000000026 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000126 /* ModelsTests.swift */; };
 		AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000127 /* TimingHeuristicsTests.swift */; };
 		AA000001000000000000028 /* StatusParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000128 /* StatusParserTests.swift */; };
@@ -85,6 +86,7 @@
 		AA000001000000000000136 /* APIHandlersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHandlersTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000137 /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA000001000000000000141 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = icns; name = AppIcon.icns; path = Assets/AppIcon.icns; sourceTree = "<group>"; };
 		AA000001000000000000200 /* ClaudeWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000001000000000000201 /* ClaudeWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -101,6 +103,7 @@
 				AA000001000000000000340 /* API */,
 				AA000001000000000000350 /* UI */,
 				AA000001000000000000130 /* Info.plist */,
+				AA000001000000000000141 /* AppIcon.icns */,
 			);
 			path = ClaudeWindow;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA000001000000000000039 /* AppIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
