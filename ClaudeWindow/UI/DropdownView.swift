@@ -199,6 +199,11 @@ struct DropdownView: View {
                 }
                 .buttonStyle(.plain)
             }
+            Divider().frame(height: 12).padding(.horizontal, 4)
+            Button(action: { NSApp.terminate(nil) }) {
+                Label("Quit", systemImage: "power").font(.caption)
+            }
+            .buttonStyle(.plain)
         }
         .padding(.top, 8)
     }
