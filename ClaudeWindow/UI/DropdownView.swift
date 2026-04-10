@@ -99,7 +99,6 @@ struct DropdownView: View {
                 let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
                 // Query ceiling: derived from token budget ÷ tokens-per-query.
                 let maxQueries = max(1, tokenBudget / workload.tokensPerQuery(for: model))
-                let maxTokens = tokenBudget
 
                 // Queries Spectrum
                 VStack(alignment: .leading, spacing: 4) {
@@ -120,29 +119,36 @@ struct DropdownView: View {
                     )
                 }
 
-                // Tokens Spectrum
+                // Cost-per-query bar: shows how expensive each query is for
+                // the selected model. Haiku sits left (green/cheap), Opus sits
+                // right (red/expensive). Scale = tokenBudget ÷ 5 so that a
+                // query consuming 20% of the session budget reaches the far end.
                 let tokensPerQ = workload.tokensPerQuery(for: model)
+                let costScale  = max(1, tokenBudget / 5)
+                let clampedCost = min(tokensPerQ, costScale)
+                let budgetPct   = Int((Double(tokensPerQ) / Double(tokenBudget)) * 100)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Label("Tokens", systemImage: "character.cursor.ibeam")
+                        Label("Cost/query", systemImage: "bolt")
                             .font(.caption)
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Text("~\(formatK(tokensPerQ)) tokens")
+                            .font(.caption.bold())
                             .foregroundStyle(.primary)
                         Text("·")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
-                        Text("~\(formatK(tokensPerQ))/query")
+                        Text("\(budgetPct)% of budget")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
-                        Spacer()
-                        Text("\(formatK(cap.minTokens))–\(formatK(cap.maxTokens)) / \(formatK(maxTokens))")
-                            .font(.caption.bold())
-                            .foregroundStyle(.primary)
                     }
+                    // Single-point marker: use a 1-wide range at the cost position.
                     SpectrumBar(
-                        minValue: cap.minTokens,
-                        maxValue: cap.maxTokens,
-                        maxPossible: maxTokens,
-                        metricType: .tokens
+                        minValue: clampedCost,
+                        maxValue: clampedCost,
+                        maxPossible: costScale,
+                        metricType: .cost
                     )
                 }
             } else {

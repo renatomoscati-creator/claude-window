@@ -5,23 +5,36 @@ import SwiftUI
 enum SpectrumMetricType {
     case queries
     case tokens
-    
-    /// Spectrum goes from red (left) to green (right) for both types
+    /// Per-query cost: green (cheap) → red (expensive), left to right.
+    /// Higher value = more expensive = further right = more red.
+    case cost
+
     var gradientColors: [Color] {
-        [
-            .red.opacity(0.4),
-            .red.opacity(0.6),
-            .orange.opacity(0.7),
-            .yellow.opacity(0.7),
-            .green.opacity(0.7),
-            .green.opacity(0.4)
-        ]
+        switch self {
+        case .queries, .tokens:
+            // cheap/low = red (left), high capacity = green (right)
+            return [
+                .red.opacity(0.4),
+                .red.opacity(0.6),
+                .orange.opacity(0.7),
+                .yellow.opacity(0.7),
+                .green.opacity(0.7),
+                .green.opacity(0.4)
+            ]
+        case .cost:
+            // cheap = green (left), expensive = red (right)
+            return [
+                .green.opacity(0.4),
+                .green.opacity(0.7),
+                .yellow.opacity(0.7),
+                .orange.opacity(0.7),
+                .red.opacity(0.6),
+                .red.opacity(0.4)
+            ]
+        }
     }
-    
-    /// Glass highlight color for the active range
-    var glassHighlight: Color {
-        .white
-    }
+
+    var glassHighlight: Color { .white }
 }
 
 // MARK: - Spectrum Bar View
