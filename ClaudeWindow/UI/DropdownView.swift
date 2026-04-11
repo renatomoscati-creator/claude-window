@@ -11,6 +11,8 @@ struct DropdownView: View {
             Divider()
             capacitySection
             Divider()
+            sessionSection
+            Divider()
             reasonsSection
             Divider()
             bestWindowSection
@@ -154,6 +156,79 @@ struct DropdownView: View {
                     Label(reason, systemImage: "info.circle")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+            }
+        }
+        .padding(.vertical, 8)
+    }
+
+    private var sessionSection: some View {
+        let plan     = appState.settings.plan
+        let model    = appState.settings.selectedModel
+        let workload = appState.settings.workloadProfile
+        let customPlan = plan == .custom ? appState.settings.customPlan : nil
+        let tokenBudget  = customPlan?.baseTokenLimit ?? plan.tokenBudget
+        let tokensPerQ   = workload.tokensPerQuery(for: model)
+        let used         = appState.queriesUsedThisWindow
+        let tokensUsed   = used * tokensPerQ
+        let tokensLeft   = max(0, tokenBudget - tokensUsed)
+        let queriesLeft  = max(0, tokensLeft / max(1, tokensPerQ))
+        let pctUsed      = min(100, Int(Double(tokensUsed) / Double(tokenBudget) * 100))
+        // Consumption bar: 25% headroom so 100% usage doesn't clip the marker.
+        let barCeiling   = Int(Double(tokenBudget) * 1.25)
+        let windowMins   = Int((1.0 - appState.sessionWindowProgress) * 300)
+
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("This Session")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Spacer()
+                Text("\(windowMins)m left in window")
+                    .font(.caption2).foregroundStyle(.tertiary)
+            }
+
+            // Stepper row
+            HStack {
+                Label("Queries used", systemImage: "checkmark.circle")
+                    .font(.caption).foregroundStyle(.primary)
+                Spacer()
+                HStack(spacing: 8) {
+                    Button(action: { appState.decrementQuery() }) {
+                        Image(systemName: "minus.circle")
+                            .font(.caption)
+                    }.buttonStyle(.plain).disabled(used == 0)
+
+                    Text("\(used)")
+                        .font(.caption.monospacedDigit().bold())
+                        .frame(minWidth: 24, alignment: .center)
+
+                    Button(action: { appState.incrementQuery() }) {
+                        Image(systemName: "plus.circle")
+                            .font(.caption)
+                    }.buttonStyle(.plain)
+                }
+            }
+
+            // Consumption bar (green=fresh → red=depleted)
+            SpectrumBar(
+                minValue: tokensUsed,
+                maxValue: tokensUsed,
+                maxPossible: barCeiling,
+                metricType: .cost
+            )
+
+            // Remaining summary
+            HStack {
+                Image(systemName: tokensLeft > 0 ? "battery.75" : "battery.0")
+                    .font(.caption2)
+                    .foregroundStyle(tokensLeft > tokenBudget / 3 ? .green : tokensLeft > 0 ? .orange : .red)
+                Text(tokensLeft > 0
+                     ? "~\(formatK(tokensLeft)) tokens · ~\(queriesLeft) queries remaining"
+                     : "Budget likely exhausted for this window")
+                    .font(.caption2)
+                    .foregroundStyle(tokensLeft > 0 ? Color.secondary : Color.red)
+                Spacer()
+                Text("\(pctUsed)% used")
+                    .font(.caption2).foregroundStyle(.tertiary)
             }
         }
         .padding(.vertical, 8)

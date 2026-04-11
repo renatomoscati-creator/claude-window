@@ -19,6 +19,14 @@ final class AppState: ObservableObject {
     @Published var isRefreshing = false
     @Published var lastRefreshed: Date?
 
+    // MARK: — Session usage tracker
+    // Tracks queries used in the current 5-hour rolling window.
+    // Persisted across app restarts; auto-resets when the window expires.
+    static let windowDuration: TimeInterval = 5 * 3600  // 5 hours
+
+    @Published var queriesUsedThisWindow: Int = 0
+    @Published var sessionWindowStart: Date = Date()
+
     private var refreshTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     private let apiServer = LocalAPIServer()
@@ -26,12 +34,64 @@ final class AppState: ObservableObject {
     init(settings: SettingsStore = SettingsStore(), telemetry: TelemetryStore = TelemetryStore()) {
         self.settings = settings
         self.telemetry = telemetry
+        loadSessionState()
         Task { await refresh() }
         startRefreshTimer()
         if settings.localAPIEnabled {
             apiServer.start(appState: self)
         }
         setupBindings()
+    }
+
+    // MARK: — Session tracking
+
+    private func loadSessionState() {
+        let ud = UserDefaults(suiteName: "com.claudewindow.app") ?? .standard
+        let start = ud.object(forKey: "sessionWindowStart") as? Date ?? Date()
+        let expired = Date().timeIntervalSince(start) >= Self.windowDuration
+        if expired {
+            sessionWindowStart = Date()
+            queriesUsedThisWindow = 0
+            saveSessionState()
+        } else {
+            sessionWindowStart = start
+            queriesUsedThisWindow = ud.integer(forKey: "queriesUsedThisWindow")
+        }
+    }
+
+    private func saveSessionState() {
+        let ud = UserDefaults(suiteName: "com.claudewindow.app") ?? .standard
+        ud.set(queriesUsedThisWindow, forKey: "queriesUsedThisWindow")
+        ud.set(sessionWindowStart,    forKey: "sessionWindowStart")
+    }
+
+    func incrementQuery() {
+        checkWindowExpiry()
+        queriesUsedThisWindow += 1
+        saveSessionState()
+    }
+
+    func decrementQuery() {
+        checkWindowExpiry()
+        queriesUsedThisWindow = max(0, queriesUsedThisWindow - 1)
+        saveSessionState()
+    }
+
+    func resetSession() {
+        sessionWindowStart = Date()
+        queriesUsedThisWindow = 0
+        saveSessionState()
+    }
+
+    private func checkWindowExpiry() {
+        if Date().timeIntervalSince(sessionWindowStart) >= Self.windowDuration {
+            sessionWindowStart = Date()
+            queriesUsedThisWindow = 0
+        }
+    }
+
+    var sessionWindowProgress: Double {
+        min(1.0, Date().timeIntervalSince(sessionWindowStart) / Self.windowDuration)
     }
 
     // MARK: — Bindings
