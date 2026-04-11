@@ -143,9 +143,9 @@ struct DropdownView: View {
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
-                    // Single-point marker: use a 1-wide range at the cost position.
+                    // Filled bar: 0 → cost position. Grows as model gets pricier.
                     SpectrumBar(
-                        minValue: clampedCost,
+                        minValue: 0,
                         maxValue: clampedCost,
                         maxPossible: costScale,
                         metricType: .cost
