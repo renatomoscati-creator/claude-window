@@ -95,59 +95,54 @@ struct DropdownView: View {
                 let plan = appState.settings.plan
                 let workload = appState.settings.workloadProfile
                 let customPlan = plan == .custom ? appState.settings.customPlan : nil
-                // Token ceiling: fixed per plan (model-independent).
                 let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
-                // Query ceiling: derived from token budget ÷ tokens-per-query.
-                let maxQueries = max(1, tokenBudget / workload.tokensPerQuery(for: model))
 
-                // Queries Spectrum
+                // Per-model ceilings (for label text).
+                let maxQueries = max(1, tokenBudget / workload.tokensPerQuery(for: model))
+                let tokensPerQ = workload.tokensPerQuery(for: model)
+
+                // Shared fixed ceilings — same across all models so bar position
+                // reflects the model's absolute standing, not just efficiency %.
+                //   Queries ceiling = Haiku max (cheapest → most queries possible)
+                //   Cost ceiling    = Opus tpq   (most expensive per query)
+                let sharedQueryCeiling = max(1, tokenBudget / workload.tokensPerQuery(for: .haiku))
+                let sharedCostCeiling  = workload.tokensPerQuery(for: .opus)
+
+                // Queries bar — glass marker sits much further left for Opus than Haiku.
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Label("Queries", systemImage: "bubble.left.and.bubble.right")
-                            .font(.caption)
-                            .foregroundStyle(.primary)
+                            .font(.caption).foregroundStyle(.primary)
                         Spacer()
                         Text("\(cap.minQueries)–\(cap.maxQueries) / \(maxQueries)")
-                            .font(.caption.bold())
-                            .foregroundStyle(.primary)
+                            .font(.caption.bold()).foregroundStyle(.primary)
                     }
                     SpectrumBar(
                         minValue: cap.minQueries,
                         maxValue: cap.maxQueries,
-                        maxPossible: maxQueries,
+                        maxPossible: sharedQueryCeiling,
                         metricType: .queries
                     )
                 }
 
-                // Cost-per-query bar: shows how expensive each query is for
-                // the selected model. Haiku sits left (green/cheap), Opus sits
-                // right (red/expensive). Scale = tokenBudget ÷ 5 so that a
-                // query consuming 20% of the session budget reaches the far end.
-                let tokensPerQ = workload.tokensPerQuery(for: model)
-                let costScale  = max(1, tokenBudget / 5)
-                let clampedCost = min(tokensPerQ, costScale)
-                let budgetPct   = Int((Double(tokensPerQ) / Double(tokenBudget)) * 100)
+                // Cost-per-query bar — fills to Opus cost ceiling so cheap models
+                // show a short green bar and expensive models show a long red bar.
+                let budgetPct = Int((Double(tokensPerQ) / Double(tokenBudget)) * 100)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Label("Cost/query", systemImage: "bolt")
-                            .font(.caption)
-                            .foregroundStyle(.primary)
+                            .font(.caption).foregroundStyle(.primary)
                         Spacer()
                         Text("~\(formatK(tokensPerQ)) tokens")
-                            .font(.caption.bold())
-                            .foregroundStyle(.primary)
-                        Text("·")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
+                            .font(.caption.bold()).foregroundStyle(.primary)
+                        Text("·").font(.caption2).foregroundStyle(.tertiary)
                         Text("\(budgetPct)% of budget")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                            .font(.caption2).foregroundStyle(.secondary)
                     }
-                    // Filled bar: 0 → cost position. Grows as model gets pricier.
                     SpectrumBar(
                         minValue: 0,
-                        maxValue: clampedCost,
-                        maxPossible: costScale,
+                        maxValue: tokensPerQ,
+                        maxPossible: sharedCostCeiling,
                         metricType: .cost
                     )
                 }
