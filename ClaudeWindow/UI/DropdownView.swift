@@ -96,20 +96,15 @@ struct DropdownView: View {
                 let workload = appState.settings.workloadProfile
                 let customPlan = plan == .custom ? appState.settings.customPlan : nil
                 let tokenBudget = customPlan?.baseTokenLimit ?? plan.tokenBudget
+                let tokensPerQ  = workload.tokensPerQuery(for: model)
 
-                // Per-model ceilings (for label text).
-                let maxQueries = max(1, tokenBudget / workload.tokensPerQuery(for: model))
-                let tokensPerQ = workload.tokensPerQuery(for: model)
+                // Per-model query ceiling: marker position = efficiency × 0.8,
+                // so at score 78 both markers sit at ~62% (yellow-green zone)
+                // regardless of which model is selected.
+                let maxQueries = max(1, tokenBudget / tokensPerQ)
 
-                // Shared fixed ceilings — same across all models so bar position
-                // reflects the model's absolute standing, not just efficiency %.
-                //   Queries ceiling = Haiku max (cheapest → most queries possible)
-                //   Cost ceiling    = Opus tpq × 1.25 (25% headroom keeps the
-                //                     Opus marker from clipping at the right edge)
-                let sharedQueryCeiling = max(1, tokenBudget / workload.tokensPerQuery(for: .haiku))
-                let sharedCostCeiling  = Int(Double(workload.tokensPerQuery(for: .opus)) * 1.25)
-
-                // Queries bar — glass marker sits much further left for Opus than Haiku.
+                // Queries bar — position encodes timing quality, not absolute count.
+                // Green = good window for this model. Red = poor window.
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Label("Queries", systemImage: "bubble.left.and.bubble.right")
@@ -121,33 +116,23 @@ struct DropdownView: View {
                     SpectrumBar(
                         minValue: cap.minQueries,
                         maxValue: cap.maxQueries,
-                        maxPossible: sharedQueryCeiling,
+                        maxPossible: maxQueries,
                         metricType: .queries
                     )
                 }
 
-                // Cost-per-query bar — fills to Opus cost ceiling so cheap models
-                // show a short green bar and expensive models show a long red bar.
-                let budgetPct = Int((Double(tokensPerQ) / Double(tokenBudget)) * 100)
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Label("Cost/query", systemImage: "bolt")
-                            .font(.caption).foregroundStyle(.primary)
-                        Spacer()
-                        Text("~\(formatK(tokensPerQ)) tokens")
-                            .font(.caption.bold()).foregroundStyle(.primary)
-                        Text("·").font(.caption2).foregroundStyle(.tertiary)
-                        Text("\(budgetPct)% of budget")
-                            .font(.caption2).foregroundStyle(.secondary)
-                    }
-                    // Single-point marker: min==max so glass renders as a
-                    // 12px bubble at the cost position on the gradient.
-                    SpectrumBar(
-                        minValue: tokensPerQ,
-                        maxValue: tokensPerQ,
-                        maxPossible: sharedCostCeiling,
-                        metricType: .cost
-                    )
+                // Cost row — text only. A second bar can't align with the queries
+                // bar (different dimensions), so cost context lives as a label.
+                let budgetPct = max(1, Int((Double(tokensPerQ) / Double(tokenBudget)) * 100))
+                HStack {
+                    Label("Cost/query", systemImage: "bolt")
+                        .font(.caption).foregroundStyle(.primary)
+                    Spacer()
+                    Text("~\(formatK(tokensPerQ)) tokens")
+                        .font(.caption.bold()).foregroundStyle(.primary)
+                    Text("·").font(.caption2).foregroundStyle(.tertiary)
+                    Text("\(budgetPct)% of budget")
+                        .font(.caption2).foregroundStyle(.secondary)
                 }
             } else {
                 HStack {
