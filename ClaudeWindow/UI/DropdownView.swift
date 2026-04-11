@@ -104,9 +104,10 @@ struct DropdownView: View {
                 // Shared fixed ceilings — same across all models so bar position
                 // reflects the model's absolute standing, not just efficiency %.
                 //   Queries ceiling = Haiku max (cheapest → most queries possible)
-                //   Cost ceiling    = Opus tpq   (most expensive per query)
+                //   Cost ceiling    = Opus tpq × 1.25 (25% headroom keeps the
+                //                     Opus marker from clipping at the right edge)
                 let sharedQueryCeiling = max(1, tokenBudget / workload.tokensPerQuery(for: .haiku))
-                let sharedCostCeiling  = workload.tokensPerQuery(for: .opus)
+                let sharedCostCeiling  = Int(Double(workload.tokensPerQuery(for: .opus)) * 1.25)
 
                 // Queries bar — glass marker sits much further left for Opus than Haiku.
                 VStack(alignment: .leading, spacing: 4) {
@@ -139,8 +140,10 @@ struct DropdownView: View {
                         Text("\(budgetPct)% of budget")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
+                    // Single-point marker: min==max so glass renders as a
+                    // 12px bubble at the cost position on the gradient.
                     SpectrumBar(
-                        minValue: 0,
+                        minValue: tokensPerQ,
                         maxValue: tokensPerQ,
                         maxPossible: sharedCostCeiling,
                         metricType: .cost
