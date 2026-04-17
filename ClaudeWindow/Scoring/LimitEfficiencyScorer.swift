@@ -54,10 +54,16 @@ enum LimitEfficiencyScorer {
         let weekday = cal.component(.weekday, from: date)
         let isWeekend = weekday == 1 || weekday == 7
 
-        if pressure < 0.3 {
+        // Pressure buckets always say something — leaving the 0.30-0.65 band
+        // empty caused the yellow-state-with-no-explanation bug.
+        if pressure < 0.30 {
             reasons.append("Off-peak US hours. Low estimated demand.")
-        } else if pressure > 0.65 {
-            reasons.append("Peak US business hours. Elevated estimated demand.")
+        } else if pressure < 0.55 {
+            reasons.append("Moderate regional load. Mixed demand across regions.")
+        } else if pressure < 0.75 {
+            reasons.append("Elevated regional load. Multiple regions in business hours.")
+        } else {
+            reasons.append("Peak global load. US business hours overlapping other regions.")
         }
         if hour >= 1 && hour <= 7 {
             reasons.append("US overnight. Historically favorable window.")
@@ -68,11 +74,11 @@ enum LimitEfficiencyScorer {
         if TimingHeuristics.hasActiveHoliday(on: date, in: holidayRegions) {
             reasons.append("Regional holiday(s) reduce expected demand.")
         }
-        if reasons.isEmpty {
-            // Quiet conditions: no heuristic fired. Cycle a friendly fallback by
-            // hour-of-day so the message changes over time but doesn't flicker
-            // between refreshes within the same hour.
-            reasons.append(Self.quietFallbacks[hour % Self.quietFallbacks.count])
+        // Only swap in a friendly cheerleader message when pressure is
+        // genuinely low. A "clear runway ahead" line alongside a yellow state
+        // would lie about the window.
+        if pressure < 0.25, reasons.count == 1 {
+            reasons[0] = Self.quietFallbacks[hour % Self.quietFallbacks.count]
         }
         return Array(reasons.prefix(5))
     }

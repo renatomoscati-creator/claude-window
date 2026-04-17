@@ -1,75 +1,90 @@
 # Claude Window
 
-A tiny macOS menu-bar app that estimates **when is a good time to use Claude** and **how much capacity you have left in the current session window**. It reads Anthropic's public status page in real time and combines that with timing heuristics (peak hours across US/EU/APAC, weekends, regional holidays) to score the current window and forecast the next 12 hours.
+**Stop guessing. Know when Claude is worth using.**
 
-> **Not affiliated with Anthropic.** The usage capacity numbers are calibrated from publicly documented plan limits and community-reported behavior — they are estimates, not guarantees. Reliability/service-health signals come straight from [status.claude.com](https://status.claude.com).
+Claude Window lives in your menu bar and gives you a real-time signal: is this a good moment to send that heavy prompt, or should you wait?
+
+**[⬇ Download for macOS →](https://github.com/renatomoscati-creator/claude-window/releases/latest)** · MIT License · No login required · No data sent
+
+![Claude Window — Efficient window, score 94](docs/screenshots/hero.png)
 
 ---
 
-## What it does
+## What you get
 
-- **Menu-bar icon** colored by current window state (green/yellow/orange/red).
-- **Dropdown** shows:
-  - A score 0–100 with confidence band and "Why" explainer.
-  - Per-surface scores for Claude Desktop, Claude Code, and Claude API (each has its own load profile).
-  - Estimated queries remaining in your 5-hour rolling window for the selected plan + model + workload profile.
-  - A **12-hour forecast** of expected load, colored to match the main score.
-  - A "Best Next Window" suggestion when the current hour isn't favorable.
-- **Local HTTP API** (optional, off by default) on `127.0.0.1:58742` exposing `/score`, `/capacity`, `/recommendation` for scripting. Loopback-only, with an origin allow-list so random websites can't scrape your usage.
+- **Menu-bar icon** — green/yellow/orange/red at a glance
+- **Score 0–100** with a plain-English "why"
+- **Per-surface scores** for Claude.ai, Claude Code, and API — each has its own load profile
+- **Estimated queries left** in your current 5-hour window, scaled to your plan + model
+- **12-hour forecast** so you can schedule intensive work into optimal windows
+- **"Best Next Window"** suggestion when the current hour isn't favorable
+- **Local API** at `127.0.0.1:58742` — `/score`, `/capacity`, `/recommendation` for scripting
+
+## Install (30 seconds)
+
+1. [Download the latest release](https://github.com/renatomoscati-creator/claude-window/releases/latest)
+2. Move `ClaudeWindow.app` to `/Applications`
+3. Right-click → Open (first launch only, to bypass Gatekeeper on unsigned builds)
+
+The app appears as a colored icon in your menu bar. Click it to open the dropdown.
+
+> Signed & notarized DMG coming soon — will remove the right-click step.
+
+## Privacy & transparency
+
+- **No login required** — no Claude account, no Anthropic account
+- **No access to your prompts or conversations**
+- **Nothing leaves your machine** — the only outbound call is to Anthropic's public status page
+- **Estimates are heuristic** — based on timing patterns and documented plan limits, not real-time data from Anthropic
+- **Fully open source** — read every line at [ClaudeWindow/](ClaudeWindow/)
+- MIT licensed
+
+## Who it's for
+
+Claude Pro and Max users who do deep work — long coding sessions, research, writing — and want to route that work into windows where Claude is least likely to be rate-limited or degraded. Especially useful if you use Claude Code, run multi-step agents, or frequently hit the 5-hour rolling limit.
 
 ## Screenshots
 
-Drop screenshots into `docs/screenshots/` and reference them here:
+| Dropdown | Forecast |
+|----------|----------|
+| ![Dropdown](docs/screenshots/hero.png) | ![Forecast](docs/screenshots/forecast.png) |
 
-```
-![Dropdown](docs/screenshots/dropdown.png)
-![Forecast expanded](docs/screenshots/forecast.png)
-![Settings](docs/screenshots/settings.png)
-```
+## Accuracy caveat
 
-## Requirements
+Numbers are heuristic — calibrated from publicly documented plan limits and community-reported behavior, not a live feed from Anthropic:
 
-- macOS 13 (Ventura) or later
-- Xcode 15 or later (for building from source)
-- Swift 5.9+
+- **Plan token budgets** — derived from documented message-count limits × a ~2,000 tokens/query average
+- **Workload multipliers** — Claude Code runs longer tool-calling sessions, API is self-paced; these are estimates
+- **Max-plan weekly Opus caps** — not yet modeled; the app uses the 5-hour rolling window as the single budget
 
-## Quick install
+If you have real usage data and want to tighten the numbers, a PR or issue is welcome.
 
-Easiest: **download the latest `.app` from Releases** and drop it into `/Applications`. First launch: right-click → Open to bypass Gatekeeper (unsigned build).
+## Build from source
 
-Build from source:
+<details>
+<summary>Build instructions</summary>
+
 ```bash
 git clone https://github.com/renatomoscati-creator/claude-window.git
-cd "claude-window"
+cd claude-window
 xcodebuild -project ClaudeWindow.xcodeproj -scheme ClaudeWindow -configuration Release build
 open ~/Library/Developer/Xcode/DerivedData/ClaudeWindow-*/Build/Products/Release/ClaudeWindow.app
 ```
 
-Full step-by-step (for AI coding agents): see [docs/INSTALL.md](docs/INSTALL.md).
-Full human walkthrough: [Claude Window — Install Guide](https://www.notion.so/345f3861c73181169a93efdd62632faa) on Notion.
+Requirements: macOS 13 (Ventura)+, Xcode 15+, Swift 5.9+
 
-## Calibration caveat
-
-A few numbers are heuristic and should be calibrated against your own usage before trusted:
-
-- **Plan token budgets** in [ClaudeWindow/Models/Plan.swift](ClaudeWindow/Models/Plan.swift) — derived from publicly documented ~message-count limits (Pro ≈ 45 msgs / 5h, Max 5× ≈ 225 msgs / 5h, etc.) times a rough 2,000 tokens/query average.
-- **Workload profiles** in [ClaudeWindow/Models/WorkloadProfile.swift](ClaudeWindow/Models/WorkloadProfile.swift) — per-model token averages.
-- **Surface multipliers** in [ClaudeWindow/Models/Surface.swift](ClaudeWindow/Models/Surface.swift) — Claude Code (×1.15 load) runs longer tool-calling sessions, Claude API (×0.90) is self-paced. These are guesses until real data calibrates them.
-- **Max-plan weekly Opus caps** are not yet modeled — the app treats the 5-hour rolling window as the single budget. If you're on Max 20× and use Opus heavily, expect the UI to under-warn about weekly limits.
-
-If you have real usage data and want to tighten these numbers, a PR or issue is welcome.
+</details>
 
 ## Contributing
 
-Tests live in `ClaudeWindowTests/`. Run them with:
+Tests live in `ClaudeWindowTests/`. Run with:
+
 ```bash
 xcodebuild test -project ClaudeWindow.xcodeproj -scheme ClaudeWindow -destination 'platform=macOS'
 ```
 
-Open an issue before starting a non-trivial change — happy to discuss direction.
+Open an issue before starting a non-trivial change.
 
 ## License
 
-[MIT](LICENSE) © 2026 Renato Moscati.
-
-Built and maintained by [@renatomoscati-creator](https://github.com/renatomoscati-creator). Visit for updates and new projects.
+[MIT](LICENSE) © 2026 Renato Moscati · [@renatomoscati-creator](https://github.com/renatomoscati-creator)

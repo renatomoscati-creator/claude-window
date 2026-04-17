@@ -2,7 +2,6 @@ import SwiftUI
 
 struct DropdownView: View {
     @EnvironmentObject var appState: AppState
-    @State private var showForecast: Bool = false
 
     // Feature flag: session usage tracker (stepper, consumption bar, remaining
     // counter). Retired because the remaining-tokens counter proved too noisy
@@ -145,22 +144,12 @@ struct DropdownView: View {
                 // regardless of which model is selected.
                 let maxQueries = max(1, tokenBudget / tokensPerQ)
 
-                // Queries bar — position encodes timing quality, not absolute count.
-                // Green = good window for this model. Red = poor window.
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Label("Queries", systemImage: "bubble.left.and.bubble.right")
-                            .font(.caption).foregroundStyle(.primary)
-                        Spacer()
-                        Text("\(cap.minQueries)–\(cap.maxQueries) / \(maxQueries)")
-                            .font(.caption.bold()).foregroundStyle(.primary)
-                    }
-                    SpectrumBar(
-                        minValue: cap.minQueries,
-                        maxValue: cap.maxQueries,
-                        maxPossible: maxQueries,
-                        metricType: .queries
-                    )
+                HStack {
+                    Label("Queries", systemImage: "bubble.left.and.bubble.right")
+                        .font(.caption).foregroundStyle(.primary)
+                    Spacer()
+                    Text("\(cap.minQueries)–\(cap.maxQueries) / \(maxQueries)")
+                        .font(.caption.bold()).foregroundStyle(.primary)
                 }
 
                 HStack {
@@ -274,17 +263,7 @@ struct DropdownView: View {
 
     private var bestWindowSection: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Button(action: { withAnimation(.easeInOut(duration: 0.18)) { showForecast.toggle() } }) {
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text("Best Next Window").font(.caption2).foregroundStyle(.secondary)
-                    Spacer()
-                    Image(systemName: showForecast ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 9, weight: .semibold))
-                        .foregroundStyle(.tertiary)
-                }
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+            Text("Best Next Window").font(.caption2).foregroundStyle(.secondary)
 
             if let bw = appState.bestWindow {
                 Text("\(hourLabel(bw.startHour))–\(hourLabel(bw.endHour)) UTC · \(bw.confidence.rawValue.capitalized) confidence")
@@ -294,13 +273,10 @@ struct DropdownView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
 
-            if showForecast {
-                ForecastStrip(
-                    regions: Set(appState.settings.holidayRegions),
-                    timeZone: appState.settings.forecastTimeZone
-                )
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
+            ForecastStrip(
+                regions: Set(appState.settings.holidayRegions),
+                timeZone: appState.settings.forecastTimeZone
+            )
         }
         .padding(.vertical, 8)
     }
