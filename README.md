@@ -6,7 +6,7 @@ Claude Window lives in your menu bar and gives you a real-time signal: is this a
 
 **[⬇ Download for macOS →](https://github.com/renatomoscati-creator/claude-window/releases/latest)** · MIT License · No login required · No data sent
 
-![Claude Window — Efficient window, score 94](docs/screenshots/hero.png)
+![Claude Window — Efficient window, score 94](docs/screenshots/hero.png?raw=true)
 
 ---
 
@@ -47,7 +47,7 @@ Claude Pro and Max users who do deep work — long coding sessions, research, wr
 
 | Dropdown | Forecast |
 |----------|----------|
-| ![Dropdown](docs/screenshots/hero.png) | ![Forecast](docs/screenshots/forecast.png) |
+| ![Dropdown](docs/screenshots/hero.png?raw=true) | ![Forecast](docs/screenshots/forecast.png?raw=true) |
 
 ## Accuracy caveat
 
