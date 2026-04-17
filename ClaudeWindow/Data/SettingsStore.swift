@@ -36,6 +36,13 @@ final class SettingsStore: ObservableObject {
         }
 
         selectedModel = ClaudeModel(rawValue: ud.string(forKey: "selectedModel") ?? "") ?? .sonnet
+
+        let storedTZ = ud.string(forKey: "forecastTimeZoneID") ?? ""
+        if !storedTZ.isEmpty, TimeZone(identifier: storedTZ) != nil {
+            forecastTimeZoneID = storedTZ
+        } else {
+            forecastTimeZoneID = TimeZone.current.identifier
+        }
     }
 
     @Published var plan: Plan {
@@ -81,5 +88,13 @@ final class SettingsStore: ObservableObject {
     }
     @Published var selectedModel: ClaudeModel {
         didSet { defaults.set(selectedModel.rawValue, forKey: "selectedModel") }
+    }
+    @Published var forecastTimeZoneID: String {
+        didSet { defaults.set(forecastTimeZoneID, forKey: "forecastTimeZoneID") }
+    }
+
+    /// Resolved TimeZone, falling back to the system zone if the stored ID is invalid.
+    var forecastTimeZone: TimeZone {
+        TimeZone(identifier: forecastTimeZoneID) ?? .current
     }
 }

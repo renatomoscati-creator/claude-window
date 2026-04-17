@@ -1,9 +1,28 @@
-.worktrees/
-.claude/worktrees/
+# macOS
+.DS_Store
+
+# Xcode
 *.xcuserstate
 xcuserdata/
-.DS_Store
 DerivedData/
+build/
 *.xccheckout
 *.moved-aside
 
+# Claude Code / agent sessions
+.worktrees/
+.claude/worktrees/
+.claude/
+.mcp.json
+.planning/
+
+# Knowledge graph / scratch outputs
+graphify-out/
+
+# Dev-only material not for the public repo
+Proof/
+/*.png
+docs/superpowers/
+
+# Node (for future tooling)
+node_modules/

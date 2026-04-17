@@ -21,8 +21,12 @@ final class TelemetryStore {
     private var entries: [TelemetryEntry] = []
 
     init() {
-        let support = FileManager.default.urls(for: .applicationSupportDirectory,
-                                               in: .userDomainMask).first!
+        // Fall back to tmp if Application Support is inaccessible (rare, but sandbox
+        // reset or profile weirdness would crash app launch on a force-unwrap).
+        let support = FileManager.default
+            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .first
+            ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let dir = support.appendingPathComponent("ClaudeWindow", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         fileURL = dir.appendingPathComponent("telemetry.json")
@@ -44,6 +48,7 @@ final class TelemetryStore {
 
     private func save() {
         guard let data = try? JSONEncoder().encode(entries) else { return }
-        try? data.write(to: fileURL)
+        // Atomic so a crash mid-write can't leave a half-file that fails decode next launch.
+        try? data.write(to: fileURL, options: .atomic)
     }
 }

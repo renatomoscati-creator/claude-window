@@ -33,6 +33,7 @@
 		AA000001000000000000024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000124 /* SettingsView.swift */; };
 		AA000001000000000000037 /* SpectrumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000138 /* SpectrumBar.swift */; };
 		AA000001000000000000038 /* ClaudeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000139 /* ClaudeModel.swift */; };
+		AA000001000000000000050 /* TimeZonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000150 /* TimeZonePicker.swift */; };
 		AA000001000000000000039 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000141 /* AppIcon.icns */; };
 		AA000001000000000000026 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000126 /* ModelsTests.swift */; };
 		AA000001000000000000027 /* TimingHeuristicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000127 /* TimingHeuristicsTests.swift */; };
@@ -74,6 +75,7 @@
 		AA000001000000000000124 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA000001000000000000138 /* SpectrumBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumBar.swift; sourceTree = "<group>"; };
 		AA000001000000000000139 /* ClaudeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeModel.swift; sourceTree = "<group>"; };
+		AA000001000000000000150 /* TimeZonePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZonePicker.swift; sourceTree = "<group>"; };
 		AA000001000000000000126 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000127 /* TimingHeuristicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingHeuristicsTests.swift; sourceTree = "<group>"; };
 		AA000001000000000000128 /* StatusParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusParserTests.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				AA000001000000000000122 /* SurfaceSectionView.swift */,
 				AA000001000000000000123 /* OnboardingView.swift */,
 				AA000001000000000000124 /* SettingsView.swift */,
+				AA000001000000000000150 /* TimeZonePicker.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				AA000001000000000000024 /* SettingsView.swift in Sources */,
 				AA000001000000000000037 /* SpectrumBar.swift in Sources */,
 				AA000001000000000000038 /* ClaudeModel.swift in Sources */,
+				AA000001000000000000050 /* TimeZonePicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,27 +10,16 @@ enum SpectrumMetricType {
     case cost
 
     var gradientColors: [Color] {
+        // Hues match the 12-hour forecast bars below so the whole dropdown
+        // reads in one palette: solid red / orange / yellow / green, no
+        // opacity fade that would desaturate the color.
         switch self {
         case .queries, .tokens:
-            // cheap/low = red (left), high capacity = green (right)
-            return [
-                .red.opacity(0.4),
-                .red.opacity(0.6),
-                .orange.opacity(0.7),
-                .yellow.opacity(0.7),
-                .green.opacity(0.7),
-                .green.opacity(0.4)
-            ]
+            // low = red (bad), high = green (good)
+            return [.red, .orange, .yellow, .green]
         case .cost:
             // cheap = green (left), expensive = red (right)
-            return [
-                .green.opacity(0.4),
-                .green.opacity(0.7),
-                .yellow.opacity(0.7),
-                .orange.opacity(0.7),
-                .red.opacity(0.6),
-                .red.opacity(0.4)
-            ]
+            return [.green, .yellow, .orange, .red]
         }
     }
 
@@ -44,33 +33,29 @@ struct SpectrumBar: View {
     let maxValue: Int
     let maxPossible: Int
     let metricType: SpectrumMetricType
-    
+    /// When set, the bar fills with this solid color instead of the rainbow
+    /// gradient. Used to tie the queries bar to the current window state so
+    /// it reads the same color as the 12-hour forecast and the header badge.
+    var tint: Color? = nil
+
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
             let startRatio = CGFloat(minValue) / CGFloat(maxPossible)
             let endRatio = CGFloat(maxValue) / CGFloat(maxPossible)
-            
+
             let startX = startRatio * width
             let endX = endRatio * width
-            
+
             ZStack(alignment: .leading) {
-                // Background spectrum gradient (red to green)
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: metricType.gradientColors),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .fill(backgroundGradient)
                     .frame(height: 12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .strokeBorder(Color.white.opacity(0.1), lineWidth: 0.5)
                     )
-                
-                // Active range highlight - Glass morphism effect
+
                 GlassHighlight(
                     startX: startX,
                     width: max(endX - startX, 12)
@@ -78,6 +63,23 @@ struct SpectrumBar: View {
             }
         }
         .frame(height: 16)
+    }
+
+    private var backgroundGradient: LinearGradient {
+        let colors: [Color]
+        if let tint {
+            // Solid single-hue so the queries bar reads as the same color
+            // as the 12-hour forecast bars below — same hue, same value,
+            // no rainbow or opacity fade that would desaturate it.
+            colors = [tint, tint]
+        } else {
+            colors = metricType.gradientColors
+        }
+        return LinearGradient(
+            gradient: Gradient(colors: colors),
+            startPoint: .leading,
+            endPoint: .trailing
+        )
     }
 }
 
@@ -145,20 +147,6 @@ struct GlassHighlight: View {
                 .frame(width: width, height: 20)
                 .offset(x: startX)
                 .shadow(color: .white.opacity(0.3), radius: 3, x: 0, y: 1)
-            
-            // Min marker
-            Circle()
-                .fill(Color.white)
-                .frame(width: 4, height: 4)
-                .shadow(radius: 1)
-                .offset(x: startX - 2)
-            
-            // Max marker
-            Circle()
-                .fill(Color.white)
-                .frame(width: 4, height: 4)
-                .shadow(radius: 1)
-                .offset(x: startX + width - 2)
         }
     }
 }

@@ -29,7 +29,7 @@ enum Plan: String, Codable, CaseIterable {
     /// Haiku → more queries, Opus → fewer; token ceiling stays fixed per plan.
     func baseQueryLimit(for model: ClaudeModel = .sonnet,
                         workload: WorkloadProfile = .standardWriting) -> Int {
-        let tpq = workload.tokensPerQuery(for: model)
+        let tpq = Swift.max(1, workload.tokensPerQuery(for: model))
         return Swift.max(1, tokenBudget / tpq)
     }
 
@@ -45,6 +45,35 @@ enum Plan: String, Codable, CaseIterable {
 }
 
 struct CustomPlanSettings: Codable, Equatable {
-    var baseQueryLimit: Int = 45
-    var baseTokenLimit: Int = 200_000
+    private var _baseQueryLimit: Int = 45
+    private var _baseTokenLimit: Int = 200_000
+
+    var baseQueryLimit: Int {
+        get { _baseQueryLimit }
+        set { _baseQueryLimit = Swift.max(1, newValue) }
+    }
+    var baseTokenLimit: Int {
+        get { _baseTokenLimit }
+        set { _baseTokenLimit = Swift.max(1, newValue) }
+    }
+
+    init(baseQueryLimit: Int = 45, baseTokenLimit: Int = 200_000) {
+        self._baseQueryLimit = Swift.max(1, baseQueryLimit)
+        self._baseTokenLimit = Swift.max(1, baseTokenLimit)
+    }
+
+    // Decode legacy payloads that stored the public names.
+    enum CodingKeys: String, CodingKey {
+        case baseQueryLimit, baseTokenLimit
+    }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self._baseQueryLimit = Swift.max(1, try c.decodeIfPresent(Int.self, forKey: .baseQueryLimit) ?? 45)
+        self._baseTokenLimit = Swift.max(1, try c.decodeIfPresent(Int.self, forKey: .baseTokenLimit) ?? 200_000)
+    }
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(_baseQueryLimit, forKey: .baseQueryLimit)
+        try c.encode(_baseTokenLimit, forKey: .baseTokenLimit)
+    }
 }

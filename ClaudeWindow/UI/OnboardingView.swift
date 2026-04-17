@@ -4,9 +4,11 @@ struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
     @State private var step = 0
 
+    private let lastStep = 6
+
     var body: some View {
         VStack(spacing: 20) {
-            ProgressView(value: Double(step + 1), total: 6).padding(.horizontal)
+            ProgressView(value: Double(step + 1), total: Double(lastStep + 1)).padding(.horizontal)
             Group {
                 switch step {
                 case 0: planStep
@@ -14,7 +16,8 @@ struct OnboardingView: View {
                 case 2: surfaceStep
                 case 3: workloadStep
                 case 4: regionStep
-                case 5: telemetryStep
+                case 5: timezoneStep
+                case 6: telemetryStep
                 default: EmptyView()
                 }
             }
@@ -23,8 +26,8 @@ struct OnboardingView: View {
                     Button("Back") { step -= 1 }.buttonStyle(.plain)
                 }
                 Spacer()
-                Button(step < 5 ? "Next" : "Get Started") {
-                    if step < 5 { step += 1 }
+                Button(step < lastStep ? "Next" : "Get Started") {
+                    if step < lastStep { step += 1 }
                     else { appState.settings.onboardingComplete = true }
                 }
                 .buttonStyle(.borderedProminent)
@@ -32,7 +35,7 @@ struct OnboardingView: View {
             .padding(.horizontal)
         }
         .padding(24)
-        .frame(width: 380, height: 300)
+        .frame(width: 400, height: 320)
     }
 
     private var planStep: some View {
@@ -152,6 +155,19 @@ struct OnboardingView: View {
                     .buttonStyle(.plain)
                 }
             }
+        }
+    }
+
+    private var timezoneStep: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("What timezone do you want the forecast in?").font(.headline)
+            TimeZoneSettingPicker(selection: Binding(
+                get: { appState.settings.forecastTimeZoneID },
+                set: { appState.settings.forecastTimeZoneID = $0 }
+            ), label: "")
+            .labelsHidden()
+            Text("All forecast times in Best Next Window will display in this zone. Defaults to your system timezone (\(TimeZoneFormatting.abbrAndOffset(for: appState.settings.forecastTimeZone))).")
+                .font(.caption).foregroundStyle(.secondary)
         }
     }
 

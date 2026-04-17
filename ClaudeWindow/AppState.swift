@@ -18,6 +18,7 @@ final class AppState: ObservableObject {
     @Published var bestWindow: BestWindow?
     @Published var isRefreshing = false
     @Published var lastRefreshed: Date?
+    @Published var apiServerError: String?
 
     // MARK: — Session usage tracker
     // Tracks queries used in the current 5-hour rolling window.
@@ -35,10 +36,14 @@ final class AppState: ObservableObject {
         self.settings = settings
         self.telemetry = telemetry
         loadSessionState()
-        Task { await refresh() }
+        // Capture the initial refresh task so it's cancellable and tracked.
+        refreshTask = Task { [weak self] in
+            await self?.refresh()
+        }
         startRefreshTimer()
         if settings.localAPIEnabled {
             apiServer.start(appState: self)
+            apiServerError = apiServer.lastStartError
         }
         setupBindings()
     }
@@ -97,13 +102,55 @@ final class AppState: ObservableObject {
     // MARK: — Bindings
 
     private func setupBindings() {
-        // Auto-refresh when model changes (capacity estimates change)
-        settings.$selectedModel
-            .dropFirst()
-            .sink { [weak self] _ in
-                Task { await self?.refresh() }
+        // Forward nested ObservableObject changes so SwiftUI views bound to
+        // AppState re-render when SettingsStore @Published vars change.
+        // Also use it as a universal "settings changed" signal: after the
+        // change lands (next runloop tick), re-derive primaryScore + capacity
+        // from the cached per-surface scores. Catches mode toggle,
+        // primarySurface change, plan change, workload change, etc. without
+        // needing a dedicated sink per property.
+        settings.objectWillChange
+            .sink { [weak self] in
+                guard let self else { return }
+                self.objectWillChange.send()
+                DispatchQueue.main.async { [weak self] in
+                    self?.rederivePrimary()
+                }
             }
             .store(in: &cancellables)
+
+        // Model changes don't affect the window score or service status — only
+        // capacity math. rederivePrimary() (above) already recomputes capacity
+        // with the new model, so no network refresh is needed here.
+    }
+
+    /// Recompute primaryScore + capacity from cached per-surface scores.
+    /// Cheap — no network, no scoring math beyond lookup.
+    private func rederivePrimary() {
+        let primary = settings.primarySurface
+        let mode    = settings.operatingMode
+        guard let effScore = efficiencyScores[primary],
+              let relScore = reliabilityScores[primary] else { return }
+
+        let activeScore = mode == .limitRisk ? effScore : relScore
+        primaryScore = WindowScore(
+            score: activeScore.score,
+            state: activeScore.state,
+            confidence: primaryScore?.confidence ?? .medium,
+            reasons: activeScore.reasons
+        )
+
+        // Capacity depends on efficiencyScore regardless of mode, but the
+        // confidence tracked on primaryScore can feed back into spread.
+        let customPlan = settings.plan == .custom ? settings.customPlan : nil
+        capacity = CapacityEstimator.estimate(
+            efficiencyScore: effScore.score,
+            plan: settings.plan,
+            model: settings.selectedModel,
+            workload: settings.workloadProfile,
+            confidence: primaryScore?.confidence ?? .medium,
+            customPlan: customPlan
+        )
     }
 
     // MARK: — Refresh
@@ -118,9 +165,10 @@ final class AppState: ObservableObject {
 
         for surface in Surface.allCases {
             let eff = LimitEfficiencyScorer.score(
-                at: now, serviceStatus: serviceStatus, holidayRegions: holidayRegions
+                at: now, serviceStatus: serviceStatus,
+                holidayRegions: holidayRegions, surface: surface
             )
-            let rel = ReliabilityScorer.score(serviceStatus: serviceStatus)
+            let rel = ReliabilityScorer.score(serviceStatus: serviceStatus, surface: surface)
             efficiencyScores[surface] = eff
             reliabilityScores[surface] = rel
         }
@@ -176,6 +224,10 @@ final class AppState: ObservableObject {
                 guard let self else { return }
                 let interval = Double(self.settings.refreshIntervalSeconds)
                 try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                // Re-check cancellation after wake: prior task sleeping through
+                // a restartRefreshTimer() wakes up and would otherwise fire a
+                // second refresh immediately after the new timer's first tick.
+                if Task.isCancelled { return }
                 await self.refresh()
             }
         }
@@ -188,8 +240,14 @@ final class AppState: ObservableObject {
     func updateAPIServer() {
         if settings.localAPIEnabled {
             apiServer.start(appState: self)
+            apiServerError = apiServer.lastStartError
         } else {
             apiServer.stop()
+            apiServerError = nil
         }
+    }
+
+    deinit {
+        refreshTask?.cancel()
     }
 }

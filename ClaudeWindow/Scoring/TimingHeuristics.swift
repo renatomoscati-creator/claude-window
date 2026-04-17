@@ -82,7 +82,7 @@ enum TimingHeuristics {
 
     private static func utcCalendar() -> Calendar {
         var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "UTC")!
+        cal.timeZone = TimeZone(identifier: "UTC") ?? TimeZone(secondsFromGMT: 0) ?? .current
         return cal
     }
 

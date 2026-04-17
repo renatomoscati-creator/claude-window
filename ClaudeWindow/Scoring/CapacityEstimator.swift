@@ -21,17 +21,20 @@ enum CapacityEstimator {
         // the number of turns. The per-model multiplier encodes the 1:3:5 pricing
         // ratio (Haiku:Sonnet:Opus), so Haiku gets ~3× as many queries as Sonnet
         // on the same budget and Opus gets ~0.6× as many.
-        let tokensPerQ = workload.tokensPerQuery(for: model)
+        // Clamp at the source so any future 0 multiplier can't trap the divide.
+        let tokensPerQ = max(1, workload.tokensPerQuery(for: model))
+        let safeBudget = max(1, tokenBudget)
 
         // Derived query ceiling: how many queries fit at session-average token cost.
         // This is a theoretical maximum, not an expected value.
-        let baseQueries = max(1, tokenBudget / tokensPerQ)
+        let baseQueries = max(1, safeBudget / tokensPerQ)
 
-        // Scale base by efficiency: score=100 → 80% of base, score=0 → 0%.
-        // The 0.80 ceiling reserves headroom for burst/overhead. Context-growth
-        // is already embedded in the session-average tokensPerQuery values rather
-        // than being applied as a second multiplier here.
-        let efficiencyFactor = (Double(efficiencyScore) / 100.0) * 0.80
+        // Scale base by efficiency: score=100 → 100% of base, score=0 → 0%.
+        // Context-growth overhead is already embedded in session-average
+        // tokensPerQuery, so we don't apply a second shrink factor here —
+        // otherwise the glass marker would sit in yellow territory on the
+        // spectrum bar even when the window state reads green.
+        let efficiencyFactor = Double(efficiencyScore) / 100.0
         let midEstimate = Double(baseQueries) * efficiencyFactor
 
         // Spreads encode conditional standard deviation of query capacity
@@ -81,7 +84,7 @@ enum BestWindowBuilder {
         if currentPressure < 0.35 { return nil }
 
         var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "UTC")!
+        cal.timeZone = TimeZone(identifier: "UTC") ?? TimeZone(secondsFromGMT: 0) ?? .current
 
         // Build future hours (skip offset 0 = now).
         var hours: [(hour: Int, pressure: Double)] = []

@@ -2,7 +2,10 @@ import Foundation
 
 actor AnthropicStatusFetcher {
 
-    private static let url = URL(string: "https://status.anthropic.com/api/v2/summary.json")!
+    // Anthropic moved the public statuspage from status.anthropic.com to
+    // status.claude.com — the old host now returns a 302 redirect that
+    // intermittently fails JSON decode and leaves us in "unknown" state.
+    private static let url = URL(string: "https://status.claude.com/api/v2/summary.json")!
     private var cached: ServiceStatus?
     private var cachedAt: Date?
 
@@ -12,7 +15,9 @@ actor AnthropicStatusFetcher {
             return cached
         }
         do {
-            let (data, _) = try await URLSession.shared.data(from: Self.url)
+            var request = URLRequest(url: Self.url)
+            request.timeoutInterval = 10
+            let (data, _) = try await URLSession.shared.data(for: request)
             let summary = try JSONDecoder().decode(StatusSummary.self, from: data)
             let result = Self.process(summary)
             self.cached = result

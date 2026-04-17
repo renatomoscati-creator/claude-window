@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum WindowState: String, Codable {
     case efficient = "efficient"
@@ -14,6 +15,16 @@ enum WindowState: String, Codable {
         case .highRisk:  return "orange"
         case .poor:      return "red"
         case .unknown:   return "gray"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .efficient: return .green
+        case .average:   return .yellow
+        case .highRisk:  return .orange
+        case .poor:      return .red
+        case .unknown:   return .gray
         }
     }
 
