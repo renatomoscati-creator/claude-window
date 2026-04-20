@@ -273,10 +273,13 @@ struct DropdownView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
 
-            ForecastStrip(
-                regions: Set(appState.settings.holidayRegions),
-                timeZone: appState.settings.forecastTimeZone
-            )
+            TimelineView(.everyMinute) { context in
+                ForecastStrip(
+                    now: context.date,
+                    regions: Set(appState.settings.holidayRegions),
+                    timeZone: appState.settings.forecastTimeZone
+                )
+            }
         }
         .padding(.vertical, 8)
     }
@@ -376,6 +379,7 @@ private func bringSettingsWindowToFront() {
 /// pressure (green=low/favorable, red=high/congested). Hour labels render in
 /// the user-selected forecast timezone.
 private struct ForecastStrip: View {
+    let now: Date
     let regions: Set<HolidayRegion>
     let timeZone: TimeZone
 
@@ -386,7 +390,6 @@ private struct ForecastStrip: View {
     }
 
     private var slots: [Slot] {
-        let now = Date()
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = timeZone
         return (0..<12).compactMap { offset in
